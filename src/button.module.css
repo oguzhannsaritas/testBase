@@ -1,0 +1,79 @@
+.shiny {
+    position: relative;
+    line-height: 20px;
+    font-weight: 400;
+    font-family: Inter, serif;
+    color: #fff;
+    text-align: left;
+    z-index: 3;
+    display: flex;
+    top:-1px;
+
+
+}
+.chevronRightIcon {
+    width: 16px;
+    position: relative;
+    height: 16px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.button {
+    align-self: stretch;
+    flex: 1;
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05), 0px 4px 4px rgba(0, 0, 0, 0.05), 0px 10px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 4px 12px;
+    gap: 8px;
+    z-index: 0;
+}
+.glow {
+    width: calc(100% + 20px);
+    position: absolute;
+    margin: 0 !important;
+    height: calc(100% + 20px);
+    top: -10px;
+    right: -10px;
+    bottom: -10px;
+    left: -10px;
+    filter: blur(25px);
+    border-radius: 10px;
+    background: conic-gradient(from 227.49deg at 50% 50%, #7147ff 0deg, rgba(66, 232, 255, 0) 95.01deg, rgba(255, 126, 171, 0.5) 185.59deg, #3083ff 274.88deg, #7147ff 360deg, rgba(66, 232, 255, 0) 455.01deg);
+    opacity: 0.2;
+    mix-blend-mode: screen;
+    z-index: 1;
+}
+.outline {
+    width: 100%;
+    position: absolute;
+    margin: 0 !important;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-sizing: border-box;
+    mix-blend-mode: overlay;
+    z-index: 2;
+}
+.buttonShiny {
+    border-radius: 10px;
+    position: relative;
+    height: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    font-size: 13px;
+    color: #fff;
+    font-family: Inter;
+}
+
