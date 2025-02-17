@@ -8,7 +8,7 @@ export function SupportPanel() {
                 </div>
                 <div className="flex flex-row items-start justify-start text-base text-primary-700">
                     <div className="flex flex-row items-center justify-center">
-                        <div className="relative leading-[24px] font-medium">support@untitledui.com</div>
+                        <div className="relative leading-[24px] font-medium">supportHakan@gmail.com</div>
                     </div>
                 </div>
             </div>
