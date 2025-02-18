@@ -3,7 +3,7 @@ import styles from "../button.module.css";
 export function LoginPanel() {
     return (
         <div
-            className="rounded-[12px] absolute left-2/2 -translate-x-1/2 md:right-12 top-[200px] w-full max-w-xs md:max-w-sm bg-black/50 p-6 text-white">
+            className="rounded-[12px] absolute left-full ml-[30px] -translate-x-1/2 md:right-12 top-[200px] w-full max-w-xs md:max-w-sm bg-black/50 p-6 text-white">
             <div className="w-[220px] h-5 justify-start items-center gap-2 inline-flex">
                 <div
                     className="grow shrink basis-0 mt-3 text-white/70 text-[15px] font-normal font-['Inter'] leading-tight text-start  ">
@@ -143,7 +143,7 @@ export function LoginPanel() {
 
 
                 <div
-                    className={`${styles.buttonShiny} border-2 w-26 flex flex-col items-center justify-center mt-[10px] shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)]`}>
+                    className={`${styles.buttonShiny} border-2 w-26 flex flex-col items-center justify-center mt-[10px] mb-10 shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)]`}>
                     <div className={styles.button}>
                         <button className={styles.shiny}>Log in</button>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
