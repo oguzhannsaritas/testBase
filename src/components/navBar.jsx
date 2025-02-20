@@ -27,7 +27,12 @@ export function NavBar() {
                 >
                     Log in
                 </button>
-                <a href="#" className="px-4 py-1 rounded-full transition-all hover:bg-gray-300">Buy now</a>
+                <button
+                    onClick={() => navigate("/buyNow")}
+                    className="px-4 py-1 rounded-full transition-all hover:bg-gray-300"
+                >
+                    Buy Now
+                </button>
             </div>
         </nav>
     );

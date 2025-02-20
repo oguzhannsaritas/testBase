@@ -5,7 +5,9 @@ import { LoginPanel } from "./components/loginPanel.jsx";
 import { SupportPanel } from "./components/supportPanel.jsx";
 import { GradientBoxes } from "./components/gardienBoxes.jsx";
 import { SignupPage } from "./components/signup-page/signupPage.jsx";
+
 import './app.css';
+import {BuyNow} from "./components/buy-now-page/buyNow.jsx";
 
 function Layout() {
     const location = useLocation(); // Şu anki URL'yi al
@@ -16,22 +18,19 @@ function Layout() {
             <Routes>
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/login" element={<LoginPanel />} />
+                <Route path="/buyNow" element={<BuyNow/>}/>
             </Routes>
 
-            {/* Eğer şu anki sayfa "/signup" veya "/login" ise, diğer componentleri gösterme */}
-            {location.pathname !== "/signup"  && (
+            {/* Eğer "/signup" sayfasında değilsek bu bileşenleri göster */}
+            {location.pathname !== "/signup" && location.pathname !== "/buyNow"  &&(
                 <>
                     <HeroContent />
-                    <LoginPanel />
                     <GradientBoxes />
+                    {/* Eğer "/login" sayfasında değilsek LoginPanel'i tekrar göster */}
+                    {location.pathname !== "/login" && <LoginPanel />}
                     <div className="max-w-6xl flex justify-end items-end ml-5">
                         <SupportPanel />
                     </div>
-                </>
-            )}
-            { location.pathname !== "/login" && (
-                <>
-
                 </>
             )}
         </div>
