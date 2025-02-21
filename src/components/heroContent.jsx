@@ -1,6 +1,6 @@
 export function HeroContent() {
     return (
-        <div className="text-center items-center justify-center justify-content-between justify-items-center flex flex-col justify-content-center mt-[150px]">
+        <div className="text-start items-center justify-center justify-content-between justify-items-center flex flex-col justify-content-center mt-[150px]">
             <h1 className="text-black text-[40px] w-[388px] font-semibold ">
                 Easy, Flexible and Powerful: New Era in Test Automation
             </h1>

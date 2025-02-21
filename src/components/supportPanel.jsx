@@ -1,6 +1,6 @@
 export function SupportPanel() {
     return (
-        <div className="w-[250px] md:w-[300px]  relative left-96 ml-[620px] m-auto mt-[90px] bg-gradient-to-b from-white/60 to-white/50 shadow-lg backdrop-blur-md rounded-[10px] flex flex-col p-6 gap-6 border border-gray-300">
+        <div className="w-[250px] md:w-[300px]  relative left-96 ml-[620px]  mt-[90px] bg-gradient-to-b from-white/60 to-white/50 shadow-lg backdrop-blur-md rounded-[10px] flex flex-col p-6 gap-6 border border-gray-300">
             <div className="w-full flex flex-col items-center justify-start gap-2 text-center text-xl text-gray-900 font-text-md-medium">
                 <div className="self-stretch flex flex-col items-center justify-start gap-2">
                     <div className="self-stretch leading-[10px] font-medium">Support</div>

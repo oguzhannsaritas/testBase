@@ -3,7 +3,7 @@ import styles from "../button.module.css";
 export function LoginPanel() {
     return (
         <div
-            className="rounded-[12px] absolute left-full ml-[30px] -translate-x-1/2 md:right-12 top-[200px] w-full max-w-xs md:max-w-sm bg-black/50 p-6 text-white">
+            className="rounded-[12px] absolute left-full ml-[30px] -translate-x-1/2 md:right-12 top-[112px] w-full max-w-xs md:max-w-sm bg-black/50 p-6 text-white">
             <div className="w-[220px] h-5 justify-start items-center gap-2 inline-flex">
                 <div
                     className="grow shrink basis-0 mt-3 text-white/70 text-[15px] font-normal font-['Inter'] leading-tight text-start  ">

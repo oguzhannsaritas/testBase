@@ -28,7 +28,7 @@ function Layout() {
                     <GradientBoxes />
                     {/* Eğer "/login" sayfasında değilsek LoginPanel'i tekrar göster */}
                     {location.pathname !== "/login" && <LoginPanel />}
-                    <div className="max-w-6xl flex justify-end items-end ml-5">
+                    <div className=" flex justify-end items-end  ml-5">
                         <SupportPanel />
                     </div>
                 </>
