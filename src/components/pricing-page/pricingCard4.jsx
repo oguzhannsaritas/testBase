@@ -43,21 +43,21 @@ export function PricingCard4() {
                 <input
                     type="email"
                     placeholder="Email address"
-                    className="w-full px-3 py-2 bg-white/10 group-hover:bg-[#00000080] group-hover:shadow-transparent shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)] mt-[10px] rounded-[10px] text-white placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
+                    className="w-full px-3 py-2 bg-white/10 group-hover:border-black/60 group-hover:placeholder-black group-hover:text-black  group-hover:shadow-transparent shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)] mt-[10px] rounded-[10px] text-white placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
                 />
                 <div className="absolute right-2 top-7 -translate-y-1/2">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
                         <rect width="24" height="24" rx="12" fill="url(#paint0_linear_47_2853)"/>
                         <rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="white"
-                              stroke-opacity="0.1"/>
+                              stroke-opacity="0.1" className="group-hover:stroke-black"/>
                         <path
                             d="M17.3334 17.3334H6.66671C5.93337 17.3334 5.33337 16.7334 5.33337 16.0001V8.00008C5.33337 7.26675 5.93337 6.66675 6.66671 6.66675H17.3334C18.0667 6.66675 18.6667 7.26675 18.6667 8.00008V16.0001C18.6667 16.7334 18.0667 17.3334 17.3334 17.3334Z"
                             stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                            stroke-linejoin="round"/>
+                            stroke-linejoin="round" className="group-hover:stroke-black"/>
                         <path
                             d="M17.3334 6.66675H6.66671C5.93337 6.66675 5.33337 7.26675 5.33337 8.00008L12 12.6667L18.6667 8.00008C18.6667 7.26675 18.0667 6.66675 17.3334 6.66675Z"
-                            stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                            stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" className="group-hover:stroke-black"/>
                         <defs>
                             <linearGradient id="paint0_linear_47_2853" x1="12" y1="0" x2="12" y2="24"
                                             gradientUnits="userSpaceOnUse">

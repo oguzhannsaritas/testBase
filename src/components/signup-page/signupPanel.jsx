@@ -22,7 +22,7 @@ export function SignupPanel() {
                     <input
                         type="email"
                         placeholder="Email address"
-                        className="w-full px-3 py-2  bg-white/10  mt-[10px] rounded-[10px] text-white  placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
+                        className="w-full px-3 py-2 shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)] mt-[10px] rounded-[10px]  bg-white/10  mt-[10px] rounded-[10px] text-white  placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
                     />
                     <div className="absolute right-2 top-7 -translate-y-1/2">
                         <div>
@@ -54,7 +54,7 @@ export function SignupPanel() {
                     <input
                         type="password"
                         placeholder="Password"
-                        className="w-full px-3 py-2  bg-white/10 rounded-[10px] mt-[10px] text-white placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
+                        className="w-full px-3 py-2 shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)] mt-[10px] rounded-[10px]  bg-white/10 rounded-[10px] mt-[10px] text-white placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
                     />
                     <div className="absolute right-2 top-7 -translate-y-1/2">
                         <div>
@@ -96,7 +96,7 @@ export function SignupPanel() {
                     <input
                         type="email"
                         placeholder="Enter the password again"
-                        className="w-full px-3 py-2  bg-white/10  mt-[10px] rounded-[10px] text-white  placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
+                        className="w-full px-3 py-2  bg-white/10 shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)] mt-[10px] rounded-[10px]  mt-[10px] rounded-[10px] text-white  placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
                     />
                     <div className="absolute right-2 top-7 -translate-y-1/2">
                         <div>
@@ -138,7 +138,7 @@ export function SignupPanel() {
                 <input
                         type="name"
                         placeholder="Name / Surname"
-                        className="w-full px-3 py-2  bg-white/10  mt-[10px] rounded-[10px] text-white  placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
+                        className="w-full px-3 py-2  bg-white/10  mt-[10px] shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)] mt-[10px] rounded-[10px] rounded-[10px] text-white  placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
                     />
                     <div className="absolute right-2 top-7 -translate-y-1/2">
                         <div>
@@ -173,7 +173,7 @@ export function SignupPanel() {
                     <input
                         type="tel"
                         placeholder="Telephone"
-                        className="w-full px-3 py-2  bg-white/10  mt-[10px] rounded-[10px] text-white  placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
+                        className="w-full px-3 py-2  bg-white/10  mt-[10px] rounded-[10px] text-white shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)] mt-[10px] rounded-[10px] placeholder-white/60 border-2 border-white/[0.07] focus:outline-none focus:border-white/20"
                     />
                     <div className="absolute right-2 top-7 -translate-y-1/2 flex items-center justify-center">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"

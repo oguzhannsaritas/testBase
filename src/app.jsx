@@ -6,37 +6,43 @@ import { SupportPanel } from "./components/supportPanel.jsx";
 import { GradientBoxes } from "./components/gardienBoxes.jsx";
 import { SignupPage } from "./components/signup-page/signupPage.jsx";
 import { PricingPage } from "./components/pricing-page/pricingPage.jsx";
-
+import { BuyNow } from "./components/buy-now-page/buyNow.jsx";
+// Dashboard sayfasını import ediyoruz
+import { DashboardPage } from "./components/dashboard-page/dashboardPage.jsx";
 
 import './app.css';
-import {BuyNow} from "./components/buy-now-page/buyNow.jsx";
 
 function Layout() {
-    const location = useLocation(); // Şu anki URL'yi al
+    const location = useLocation(); // Şu anki URL'yi almak için
 
     return (
         <div className="relative flex flex-col items-center justify-center">
             <NavBar />
+
             <Routes>
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/login" element={<LoginPanel />} />
-                <Route path="/buyNow" element={<BuyNow/>}/>
-                <Route path="/pricing" element={<PricingPage/>}/>
+                <Route path="/buyNow" element={<BuyNow />} />
+                <Route path="/pricing" element={<PricingPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
 
             </Routes>
 
-            {/* Eğer "/signup" sayfasında değilsek bu bileşenleri göster */}
-            {location.pathname !== "/signup" && location.pathname !== "/buyNow" && location.pathname !== "/pricing"   &&(
-                <>
-                    <HeroContent />
-                    <GradientBoxes />
-                    {/* Eğer "/login" sayfasında değilsek LoginPanel'i tekrar göster */}
-                    {location.pathname !== "/login" && <LoginPanel />}
-                    <div className=" flex justify-end items-end  ml-5">
-                        <SupportPanel />
-                    </div>
-                </>
-            )}
+            {/* Bu rotalardaysak ana sayfa bileşenlerini (hero, gradientBoxes vs.) göstermemek için bir kontrol */}
+            {location.pathname !== "/signup" &&
+                location.pathname !== "/buyNow" &&
+                location.pathname !== "/pricing" &&
+                location.pathname !== "/dashboard" && (
+                    <>
+                        <HeroContent />
+                        <GradientBoxes />
+                        {/* /login sayfasında zaten LoginPanel var, tekrar göstermiyoruz */}
+                        {location.pathname !== "/login" && <LoginPanel />}
+                        <div className="flex justify-end items-end ml-5">
+                            <SupportPanel />
+                        </div>
+                    </>
+                )}
         </div>
     );
 }
