@@ -5,6 +5,8 @@ import { LoginPanel } from "./components/loginPanel.jsx";
 import { SupportPanel } from "./components/supportPanel.jsx";
 import { GradientBoxes } from "./components/gardienBoxes.jsx";
 import { SignupPage } from "./components/signup-page/signupPage.jsx";
+import { PricingPage } from "./components/pricing-page/pricingPage.jsx";
+
 
 import './app.css';
 import {BuyNow} from "./components/buy-now-page/buyNow.jsx";
@@ -19,10 +21,12 @@ function Layout() {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/login" element={<LoginPanel />} />
                 <Route path="/buyNow" element={<BuyNow/>}/>
+                <Route path="/pricing" element={<PricingPage/>}/>
+
             </Routes>
 
             {/* Eğer "/signup" sayfasında değilsek bu bileşenleri göster */}
-            {location.pathname !== "/signup" && location.pathname !== "/buyNow"  &&(
+            {location.pathname !== "/signup" && location.pathname !== "/buyNow" && location.pathname !== "/pricing"   &&(
                 <>
                     <HeroContent />
                     <GradientBoxes />
