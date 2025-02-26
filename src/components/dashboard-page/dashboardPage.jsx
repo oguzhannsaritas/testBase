@@ -1,17 +1,33 @@
-import {PricingCard} from "../pricing-page/pricingCard.jsx";
-import {PricingCard2} from "../pricing-page/pricingCard2.jsx";
-import {PricingCard3} from "../pricing-page/pricingCard3.jsx";
-import {PricingCard4} from "../pricing-page/pricingCard4.jsx";
+import {Banner} from "./banner.jsx";
+import TestSteps from "./testSteps.jsx";
+import {TestPanel} from "./testPanel.jsx";
+import {useState} from "react";
+
+export function DashboardPage() {
+    const [selectedSteps, setSelectedSteps] = useState([]);
+
+    // TestSteps bileşeninden gelen step ekleme
+    const handleAddStep = (stepLabel) => {
+        setSelectedSteps((prev) => [...prev, stepLabel]);
+    };
+
+    // Clear butonuna basıldığında bütün adımları silme
+    const handleClearSteps = () => {
+        setSelectedSteps([]);
+    };
+
+    return (
+        <div className="flex flex-col w-full ">
+            <Banner />
+            <div className="flex relative -left-[236px] flex-col w-full ">
+                <TestSteps onAddStep={handleAddStep} />
+
+            </div>
+            <TestPanel steps={selectedSteps} onClearSteps={handleClearSteps} />
 
 
-export function DashboardPage(){
-    return(
-        <div className=" flex  gap-12 ">
-            <PricingCard/>
-            <PricingCard2/>
-            <PricingCard3/>
-            <PricingCard4/>
+
 
         </div>
-    )
+    );
 }

@@ -16,9 +16,8 @@ function Layout() {
     const location = useLocation(); // Şu anki URL'yi almak için
 
     return (
-        <div className="relative flex flex-col items-center justify-center">
-            <NavBar />
-
+        <div className="relative flex flex-col items-center justify-center ">
+            {location.pathname !== "/dashboard" && <NavBar />}
             <Routes>
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/login" element={<LoginPanel />} />

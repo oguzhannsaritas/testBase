@@ -64,8 +64,8 @@ export function LoginPanel() {
                     </div>
 
                     <div className={`${styles.buttonShiny} border-2 mt-[10px]`}>
-                        <div className={styles.button}>
-                            <button type="submit" className={styles.shiny}>Log in</button>
+                        <div className={`${styles.button}  cursor-pointer`}>
+                            <button type="submit" className={`${styles.shiny}  cursor-pointer`}>Log in</button>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5.33337 13.3334L10.6667 8.00008L5.33337 2.66675" stroke="white"
