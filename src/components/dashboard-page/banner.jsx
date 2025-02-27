@@ -12,7 +12,7 @@ export function Banner() {
     };
 
     return (
-        <div className="relative flex w-full -top-5">
+        <div className="relative flex w-full -top-5 z-50">
             <div className="flex flex-row space-x-2 relative left-2 -translate-x-1/2 ">
                 <button className="inline-flex items-center justify-start w-[150px] h-[32px]
                                 bg-white/50 border border-white/50 rounded-lg
@@ -52,7 +52,7 @@ export function Banner() {
 
                     {/* Açılır Menü */}
                     <motion.div
-                        className="absolute left-0 mt-1 w-[170px] bg-white/50 shadow-lg rounded-lg overflow-hidden"
+                        className="absolute left-0 mt-1 w-[170px] bg-white/55 shadow-lg rounded-lg overflow-hidden"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? "auto" : 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}

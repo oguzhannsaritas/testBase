@@ -18,7 +18,7 @@ export function DashboardPage() {
 
     return (
         <div className="flex flex-col w-full ">
-            <Banner />
+            <Banner/>
             <div className="flex relative -left-[236px] flex-col w-full ">
                 <TestSteps onAddStep={handleAddStep} />
 
