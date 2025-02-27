@@ -149,7 +149,7 @@ export function TestPanel({ steps, onClearSteps }) {
                                 <div
                                     className={`
                     absolute left-0 mt-1 w-24 z-50
-                    bg-gray-200 border border-white/65 rounded shadow-md text-black text-sm
+                    bg-white/100 border border-white/65 rounded shadow-md text-black text-sm
                     transition-all duration-300 overflow-hidden
                     ${
                                         isOpen
@@ -169,7 +169,7 @@ export function TestPanel({ steps, onClearSteps }) {
                                         return (
                                             <div
                                                 key={item}
-                                                className="px-2 ml-[2px] mb-1 py-1 w-[90px] hover:bg-white/65 border border-white/65 rounded-md cursor-pointer"
+                                                className="px-2 ml-[2px] mb-1 py-1 w-[90px] hover:bg-gray-200 border border-gray-100 rounded-md cursor-pointer"
                                                 onClick={() => handleSelect(index, item)}
                                             >
                                                 {itemLabel}
