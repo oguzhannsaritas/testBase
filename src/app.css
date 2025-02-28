@@ -12,6 +12,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+    height: 100vh;
+
 }
 
 .logo {
@@ -36,3 +38,36 @@
     @apply px-4 py-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-all;
 }
 
+@layer utilities {
+    .custom-scrollbar {
+        overflow-y: auto; /* Scroll sadece içerik taşarsa gözüksün */
+        scrollbar-gutter: stable; /* Scrollbar her zaman aynı yerde kalır */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 8px; /* Scroll genişliği */
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 1);
+        min-width: 2px;
+        border-radius: 4px;
+        min-height: 10px; /* Scroll thumb yüksekliği (çok küçük olmasını önler) */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Kullanıcı scroll alanı üzerine gelince scrollbar göster */
+    .custom-scrollbar:hover::-webkit-scrollbar {
+        display: block;
+    }
+
+    /* Normalde scrollbar'ı gizle */
+    .custom-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+}

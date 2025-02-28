@@ -16,7 +16,9 @@
     "preact-hooks": "^0.0.0-0.0.0",
     "react-bootstrap": "^2.10.9",
     "react-router-dom": "^7.1.5",
-    "src": "^1.1.2"
+    "src": "^1.1.2",
+    "tailwind-scrollbar": "^4.0.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.1",
