@@ -1,11 +1,11 @@
 export function BuyNowContent() {
     return (
-        <div className="flex flex-col justify-center h-screen">
+        <div className="flex flex-col justify-center h-screen -mt-16">
             <div className="text-start flex flex-col right-[10%] relative w-full max-w-[388px]">
-                <h1 className="text-black text-[40px] font-semibold">
+                <h1 className="text-black text-[40px]  custom-text-shadow font-semibold">
                     Fast, Smart and Efficient Test Automation
                 </h1>
-                <p className="mt-4 text-md text-gray-700 leading-6">
+                <p className="mt-4 text-md text-black/65 leading-6 custom-text-shadow">
                     Design your tests without writing code, run them again and see the results instantly! With our
                     user-friendly interface, creating your tests is now much faster and easier. Get instant notifications
                     when you receive errors or when your tests are successfully completed, manage your processes without

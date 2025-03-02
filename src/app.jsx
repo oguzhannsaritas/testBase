@@ -16,29 +16,32 @@ function Layout() {
     const location = useLocation(); // Şu anki URL'yi almak için
 
     return (
-        <div className="relative flex flex-col items-center justify-center ">
-            {location.pathname !== "/dashboard" && <NavBar />}
-            <Routes>
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/login" element={<LoginPanel />} />
-                <Route path="/buyNow" element={<BuyNow />} />
-                <Route path="/pricing" element={<PricingPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
+        <div className="relative flex flex-col items-center justify-center">
+            {/* Arka plan videosu - MOV formatında */}
+            <video autoPlay loop muted className="video-background">
+                <source src="/06.mp4" type="video/mp4"/>
+                Tarayıcınız video etiketini desteklemiyor.
+            </video>
 
+            {location.pathname !== "/dashboard" && <NavBar/>}
+            <Routes>
+                <Route path="/signup" element={<SignupPage/>}/>
+                <Route path="/login" element={<LoginPanel/>}/>
+                <Route path="/buyNow" element={<BuyNow/>}/>
+                <Route path="/pricing" element={<PricingPage/>}/>
+                <Route path="/dashboard" element={<DashboardPage/>}/>
             </Routes>
 
-            {/* Bu rotalardaysak ana sayfa bileşenlerini (hero, gradientBoxes vs.) göstermemek için bir kontrol */}
             {location.pathname !== "/signup" &&
                 location.pathname !== "/buyNow" &&
                 location.pathname !== "/pricing" &&
                 location.pathname !== "/dashboard" && (
                     <>
-                        <HeroContent />
-                        <GradientBoxes />
-                        {/* /login sayfasında zaten LoginPanel var, tekrar göstermiyoruz */}
-                        {location.pathname !== "/login" && <LoginPanel />}
+                        <HeroContent/>
+                        <GradientBoxes/>
+                        {location.pathname !== "/login" && <LoginPanel/>}
                         <div className="flex justify-end items-end ml-5">
-                            <SupportPanel />
+                            <SupportPanel/>
                         </div>
                     </>
                 )}
@@ -49,7 +52,7 @@ function Layout() {
 export function App() {
     return (
         <Router>
-            <Layout />
+            <Layout/>
         </Router>
     );
 }

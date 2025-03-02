@@ -10,9 +10,13 @@ import {LocationsButton} from "./locationsButton.jsx";
 import {WebVersionsButton} from "./webVersionsButton.jsx";
 import {TestTypesButton} from "./testTypesButton.jsx";
 import {BlockButton} from "./blockButton.jsx";
+import {ShareEmail} from "./shareEmail.jsx";
+import {RecordWindows} from "./recordWindows.jsx";
 
 export function DashboardPage() {
     const [selectedSteps, setSelectedSteps] = useState([]);
+    const [modalContent, setModalContent] = useState(null);
+
 
     const handleAddStep = (stepLabel) => {
         // Eklenirken her step'e bir id atayalım
@@ -53,9 +57,20 @@ export function DashboardPage() {
 
                 <TestTypesButton/>
             </div>
+            <ShareEmail/>
+
             <TestSteps/>
 
                 <TestFailureWindow/>
+            <div className="flex flex-col w-full justify-center">
+                 <RecordWindows setModalContent={setModalContent}/>
+
+            </div>
+            {modalContent && (
+                <div className="  fixed inset-0  backdrop-blur-[3px]  bg-white/50 border-[1px]  border-solid border-black/30 bg-opacity-50 flex justify-center z-50 items-center">
+                    {modalContent}
+                </div>
+            )}
         </div>
     );
 }

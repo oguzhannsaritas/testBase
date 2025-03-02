@@ -69,13 +69,13 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
     return (
         <div
             className="rounded-[12px] absolute right-auto -left-[235px] -translate-x-0
-        top-[112px] w-full max-w-md h-[500px] md:max-w-max bg-white/50 p-6
-        text-white flex flex-col z-50"
+        top-[112px] w-full max-w-md h-[500px] md:max-w-max bg-white/70 border border-black/15 p-6
+        text-white flex flex-col z-1"
             style={{ maxHeight: "550px" }}
         >
             <input
                 placeholder="Lütfen Test İsmini Giriniz"
-                className="flex-shrink-0 flex relative rounded-md h-6 px-3 w-60 -top-3 mx-auto text-black text-[13px] bg-white/50 hover:bg-white/65 active:bg-white/75 border border-white/65 shadow-md transition-colors text-center focus:outline-none"
+                className="flex-shrink-0 flex relative rounded-md h-6 px-3 w-60 -top-3 mx-auto text-black placeholder-black text-[13px] bg-white/50 hover:bg-white/65 active:bg-white/75 border border-black/10 shadow-md transition-colors text-center focus:outline-none"
             />
 
             <div
@@ -96,7 +96,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                             {/* Adım ismi */}
                             <button
                                 className="w-32 min-w-32 rounded-md h-7 px-3
-                  shadow-md border border-white/65
+                  shadow-md border border-black/10
                   flex items-center justify-center text-black text-[13px]
                   bg-white/50 transition-colors whitespace-nowrap"
                             >
@@ -127,7 +127,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                             <div className="relative inline-block">
                                 <button
                                     onClick={() => handleToggle(stepId)}
-                                    className="w-28 rounded-md px-2 py-1 bg-white/50 border border-white/50 text-black text-sm
+                                    className="w-28 rounded-md px-2 py-1 bg-white/50 border border-black/10 text-black text-sm
                          hover:bg-white/65 transition-colors"
                                 >
                                     {label}
@@ -137,7 +137,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                                 <div
                                     className={`
                     absolute left-0 mt-1 w-24 z-40
-                    bg-white/100 border border-white/65 rounded shadow-md text-black text-sm
+                    bg-white/100 border border-black/10 rounded shadow-md text-black text-sm
                     transition-all duration-300 overflow-hidden
                     ${isOpen ? "max-h-40 py-1 opacity-100" : "max-h-0 py-0 opacity-0 pointer-events-none"}
                   `}
@@ -152,7 +152,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                                         return (
                                             <div
                                                 key={item}
-                                                className="px-2 ml-[2px] mb-1 py-1 w-[90px] hover:bg-gray-200 border border-gray-100 rounded-md cursor-pointer"
+                                                className="px-2 ml-[2px] mb-1 py-1 w-[90px] hover:bg-gray-200 border border-black/20 rounded-md cursor-pointer"
                                                 onClick={() => handleSelect(stepId, item)}
                                             >
                                                 {itemLabel}
@@ -184,7 +184,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
 
                             {/* Input alanı */}
                             <input
-                                className="text-black bg-white/50 border border-white/65
+                                className="text-black bg-white/50 border border-opacity-5 border-black/10
                           rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
                                 placeholder="Değer"
                                 value={locators[stepId]?.value || ""}
@@ -229,19 +229,19 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
             <div className="mt-4 flex-shrink-0 flex justify-between gap-2 ">
                 <button
                     onClick={onClearSteps}
-                    className="w-28 bg-white/50 hover:bg-white/65 text-black border border-white/65 shadow-md px-3 py-1 rounded-md text-sm transition-colors "
+                    className="w-28 bg-white/50 hover:bg-white/65 text-black border border-black/10 shadow-md px-3 py-1 rounded-md text-sm transition-colors "
                 >
                     Clear Test
                 </button>
                 <button
                     onClick={onClearSteps}
-                    className="w-28 bg-white/50 hover:bg-white/65 text-black border border-white/65 shadow-md px-3 py-1 rounded-md text-sm transition-colors mx-auto"
+                    className="w-28 bg-white/50 hover:bg-white/65 text-black border border-black/10 shadow-md px-3 py-1 rounded-md text-sm transition-colors mx-auto"
                 >
                     Save Test
                 </button>
                 <button
                     onClick={onClearSteps}
-                    className="w-28 bg-white/50 hover:bg-white/65 text-black border border-white/65 shadow-md px-3 py-1 rounded-md text-sm transition-colors flex items-center gap-2 mr-auto"
+                    className="w-28 bg-white/50 hover:bg-white/65 text-black border border-black/10 shadow-md px-3 py-1 rounded-md text-sm transition-colors flex items-center gap-2 mr-auto"
                 >
                     Run Test
                     <svg

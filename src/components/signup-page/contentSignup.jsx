@@ -1,22 +1,22 @@
 export function HeroContentSignup() {
     return (
         <div className=" items-center justify-center text-start flex flex-col mt-[150px]">
-            <h1 className="text-black text-[40px] w-[388px] font-semibold">
+            <h1 className="text-black text-[40px] w-[388px] font-semibold custom-text-shadow">
                 Get Started with Seamless Test Automation
             </h1>
-            <p className="mt-4 text-md text-gray-700 w-[388px] leading-6 max-w-2xl text-start">
+            <p className="mt-4 text-md text-black/70 w-[388px] leading-6 max-w-2xl text-start custom-text-shadow">
                 Join our platform and unlock the power of effortless test automation. Create, manage, and execute tests
                 without any coding skills required. With our intuitive interface, setting up and running tests is easier
                 than ever!
             </p>
 
-            <div className="mt-6 space-y-4  text-md text-gray-700 w-[388px] leading-6 max-w-2xl text-start">
+            <div className="mt-6 space-y-4  text-md text-black/70 w-[388px] leading-6 max-w-2xl text-start custom-text-shadow">
                 <FeatureItem text="Instant Setup: Sign up in seconds and start automating immediately." />
                 <FeatureItem text="Run Tests Anywhere: Execute your tests globally with real-time insights." />
                 <FeatureItem text="Detailed Test History: Track your progress and optimize workflows effortlessly." />
             </div>
 
-            <p className="mt-6  text-md text-gray-700 w-[388px] leading-6 max-w-2xl text-start">
+            <p className="mt-6  text-md text-black/70 w-[388px] leading-6 max-w-2xl text-start custom-text-shadow">
                 Sign up today and experience the future of smart, flexible, and efficient test automation!
             </p>
         </div>
