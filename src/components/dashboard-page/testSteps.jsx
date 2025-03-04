@@ -1,5 +1,5 @@
-import { CheckIcon } from "../../ıcons/checkIcon.js";
-import {FailCheckIcon} from "../../ıcons/failCheckIcon.js";
+import { CheckIcon } from "../../ıcons/checkIcon.jsx";
+import {FailCheckIcon} from "../../ıcons/failCheckIcon.jsx";
 
 export function TestSteps() {
     return (

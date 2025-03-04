@@ -18,7 +18,6 @@ body {
     margin: 0;
     line-height: normal;
     background-size: cover;
-
     transition: background 0.5s ease-in-out;
 }
 
@@ -37,6 +36,18 @@ body {
 }
 
 body.dashboard-bg {
-    background:  url("../public/abstract-luxury-blur-grey-color-gradient-used-as-background-studio-wall-display-your-products.jpg") no-repeat fixed center;
+    background: url("../public/abstract-luxury-blur-grey-color-gradient-used-as-background-studio-wall-display-your-products.jpg") no-repeat fixed center;
     background-size: cover;
+    position: relative;
+}
+
+/* FloatingPaths'ın arka planla tam örtüşmesini sağla */
+.floating-paths-container {
+    position: fixed; /* Sayfaya sabitlenmiş olacak */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Arka planın üstünde, içeriğin altında olacak */
+    pointer-events: none; /* Kullanıcı etkileşimini engelle */
 }
