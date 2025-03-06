@@ -34,6 +34,7 @@ export function LoginPanel() {
                 <div className="relative">
                     <input
                         type="email"
+                        id="LoginEmailInput"
                         placeholder="Email address"
                         className="w-full px-3 py-2 text-sm  mt-[10px] placeholder-black rounded-[10px] text-black shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)]  bg-white/40 border-2 border-white/20 focus:outline-none "
                         value={email}
@@ -77,6 +78,7 @@ export function LoginPanel() {
                 <div className="relative">
                     <input
                         type={showPassword ? "text" : "password"}
+                        id="loginPasswordInput"
                         placeholder="Password"
                         className="w-full px-3 py-2 text-sm rounded-[10px] mt-[10px] text-black placeholder-black border-2 border-white/[0.07] focus:outline-none focus:border-white/20 shadow-[0px_4px_10px_rgba(255,255,255,0.2),inset_0px_1px_3px_rgba(255,255,255,0.4)] bg-white/40"
                         value={password}
@@ -163,7 +165,7 @@ export function LoginPanel() {
                         className={`${styles.buttonShiny} border-[1px ] border-solid mt-[10px]  border-black/30  bg-transparent shadow-[0px_4px_10px_rgba(0,0,0,0.5),inset_0px_0px_3px_rgba(0,0,0,0.5)]`}>
                         <div
                             className={`${styles.button}  cursor-pointer `}>
-                            <button type="submit" className={`${styles.shiny} cursor-pointer !text-black`}>Log in
+                            <button type="submit" id="loginButton" className={`${styles.shiny} cursor-pointer !text-black`}>Log in
                             </button>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">

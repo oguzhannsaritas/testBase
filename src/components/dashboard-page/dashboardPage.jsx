@@ -16,12 +16,12 @@ export function DashboardPage() {
     const [selectedSteps, setSelectedSteps] = useState([]);
     const [modalContent, setModalContent] = useState(null);
 
-    // handleAddStep artık 2 parametre alıyor: mainLabel ve subLabel
-    const handleAddStep = (mainLabel, subLabel) => {
+    // 2 param: mainLabel ve testButton
+    const handleAddStep = (mainLabel, testButton) => {
         const newStep = {
             id: uuidv4(),
             mainLabel,
-            subLabel
+            testButton
         };
         setSelectedSteps((prev) => [...prev, newStep]);
     };
@@ -38,19 +38,19 @@ export function DashboardPage() {
         <div className="flex flex-col w-full relative">
             <Banner className=" flex relative z-[9999]"/>
 
-            {/* TestStepsButtons'a onAddStep prop'unu veriyoruz */}
+            {/* TestStepsButtons: Kullanıcı tıkladığında step ekliyor */}
             <div className="flex relative -left-[236px] flex-col w-full">
                 <TestStepsButtons onAddStep={handleAddStep} />
             </div>
 
-            {/* Seçilen adımlar TestPanel'e gönderiliyor */}
+            {/* Seçilen adımları TestPanel'e gönderiyoruz */}
             <TestPanel
                 steps={selectedSteps}
                 onClearSteps={handleClearSteps}
                 onRemoveStep={handleRemoveStep}
             />
 
-            {/* Alttaki 4 butona da aynı şekilde onAddStep veriyoruz */}
+            {/* Alttaki butonlar da step ekliyor */}
             <div className="fixed flex justify-between z-1">
                 <LocationsButton onAddStep={(region, country) => handleAddStep("Locations", country ? country : region)} />
                 <BlockButton onAddStep={handleAddStep} />

@@ -25,19 +25,15 @@ export default function TestStepsButtons({ onAddStep }) {
                 setShowControls(false);
             }
         }
-
         if (isOpen) {
             document.addEventListener("mousedown", handleClickOutside);
         } else {
             document.removeEventListener("mousedown", handleClickOutside);
         }
-
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
 
-    // Maksimum index hesaplama
     const maxIndex = buttonWidths.length - 1;
-    // Yeni translateX hesaplama
     const translateX = buttonWidths.slice(0, currentIndex).reduce((sum, w) => sum + w, 0);
 
     const handleNext = () => {
@@ -66,9 +62,9 @@ export default function TestStepsButtons({ onAddStep }) {
         });
     };
 
-    // Alt butonlara tıklarken "Test Steps" menüsü + buton ismi
-    const handleAddClick = (subLabel) => {
-        onAddStep("Test Steps", subLabel);
+    // Adım ekleme
+    const handleAddClick = (testButton) => {
+        onAddStep("Test Steps", testButton);
     };
 
     return (
@@ -86,21 +82,21 @@ export default function TestStepsButtons({ onAddStep }) {
                             <button
                                 onClick={handlePrev}
                                 className="h-[28px] px-3 flex items-center justify-center text-black bg-white/70
-                           rounded-full border border-white/80 hover:bg-black/10 cursor-pointer shadow-md transition-colors text-sm"
+                                    rounded-full border border-white/80 hover:bg-black/10 cursor-pointer
+                                    shadow-md transition-colors text-sm"
                             >
                                 <span className="mr-1">{"<"}</span> Preview
                             </button>
                             <button
                                 onClick={handleNext}
                                 className="h-[28px] px-3 flex items-center justify-center text-black bg-white/70
-                           rounded-full border border-white/80 cursor-pointer hover:bg-black/10 shadow-md transition-colors text-sm"
+                                    rounded-full border border-white/80 cursor-pointer hover:bg-black/10
+                                    shadow-md transition-colors text-sm"
                             >
                                 Next <span className="ml-1">{">"}</span>
                             </button>
                         </div>
                     )}
-
-                    {/* Test Steps Ana Butonu */}
                     <button
                         onClick={toggleOpen}
                         className="flex items-center justify-between h-full min-w-[150px] px-3 cursor-pointer"
@@ -124,7 +120,6 @@ export default function TestStepsButtons({ onAddStep }) {
                         </svg>
                     </button>
 
-                    {/* Kaydırılabilir Alt Butonlar */}
                     <div
                         className={`flex items-center h-full transition-all duration-300 ${
                             isOpen ? "flex-1" : "w-0 flex-0 overflow-hidden"
@@ -135,106 +130,74 @@ export default function TestStepsButtons({ onAddStep }) {
                                 className="absolute left-0 top-[2px] h-full flex transition-transform duration-300"
                                 style={{ transform: `translateX(-${translateX}px)` }}
                             >
+                                {/* Goto URL */}
                                 <button
                                     className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                        relative hover:border hover:border-white/65
+                                        flex items-center justify-center text-black text-[13px]
+                                        hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
                                     ref={(el) => (buttonRefs.current[0] = el)}
+                                    onClick={() => handleAddClick("Goto URL")}
+                                >
+                                    Goto URL
+                                </button>
+
+                                {/* Click Button */}
+                                <button
+                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
+                                        relative hover:border hover:border-white/65
+                                        flex items-center justify-center text-black text-[13px]
+                                        hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[1] = el)}
                                     onClick={() => handleAddClick("Click Button")}
                                 >
                                     Click Button
                                 </button>
+
+                                {/* Fill Button */}
                                 <button
                                     className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[1] = el)}
+                                        relative hover:border hover:border-white/65
+                                        flex items-center justify-center text-black text-[13px]
+                                        hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[2] = el)}
                                     onClick={() => handleAddClick("Fill Button")}
                                 >
                                     Fill Button
                                 </button>
+
+                                {/* Diğer butonlar... */}
                                 <button
                                     className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[2] = el)}
+                                        relative hover:border hover:border-white/65
+                                        flex items-center justify-center text-black text-[13px]
+                                        hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[3] = el)}
                                     onClick={() => handleAddClick("Api Kontrol")}
                                 >
                                     Api Kontrol
                                 </button>
                                 <button
                                     className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[3] = el)}
+                                        relative hover:border hover:border-white/65
+                                        flex items-center justify-center text-black text-[13px]
+                                        hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[4] = el)}
                                     onClick={() => handleAddClick("Api Payload")}
                                 >
                                     Api Payload
                                 </button>
                                 <button
                                     className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[4] = el)}
+                                        relative hover:border hover:border-white/65
+                                        flex items-center justify-center text-black text-[13px]
+                                        hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[5] = el)}
                                     onClick={() => handleAddClick("Response Kontrol")}
                                 >
                                     Response Kontrol
                                 </button>
-                                <button
-                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[5] = el)}
-                                    onClick={() => handleAddClick("Extra Step")}
-                                >
-                                    Extra Step
-                                </button>
-                                <button
-                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[6] = el)}
-                                    onClick={() => handleAddClick("New Action")}
-                                >
-                                    New Action
-                                </button>
-                                <button
-                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[7] = el)}
-                                    onClick={() => handleAddClick("UI Check")}
-                                >
-                                    UI Check
-                                </button>
-                                <button
-                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[8] = el)}
-                                    onClick={() => handleAddClick("API Call")}
-                                >
-                                    API Call
-                                </button>
-                                <button
-                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
-                    relative hover:border hover:border-white/65
-                    flex items-center justify-center text-black text-[13px]
-                    hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[9] = el)}
-                                    onClick={() => handleAddClick("Validation")}
-                                >
-                                    Validation
-                                </button>
+                                {/* ... Eklemeler */}
                             </div>
                         </div>
                     </div>
