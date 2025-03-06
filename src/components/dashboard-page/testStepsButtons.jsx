@@ -197,6 +197,31 @@ export default function TestStepsButtons({ onAddStep }) {
                                 >
                                     Response Kontrol
                                 </button>
+
+                                {/* Wait For Timeout */}
+                                <button
+                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
+      relative hover:border hover:border-white/65
+      flex items-center justify-center text-black text-[13px]
+      hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[6] = el)} // index uygun şekilde ayarlayabilirsiniz
+                                    onClick={() => handleAddClick("Wait For Timeout")}
+                                >
+                                    Wait For Timeout
+                                </button>
+
+                                {/* Wait For Load State */}
+                                <button
+                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
+      relative hover:border hover:border-white/65
+      flex items-center justify-center text-black text-[13px]
+      hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[7] = el)} // index uygun şekilde ayarlayabilirsiniz
+                                    onClick={() => handleAddClick("Wait For Load State")}
+                                >
+                                    Wait For Load State
+                                </button>
+
                                 {/* ... Eklemeler */}
                             </div>
                         </div>

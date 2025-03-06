@@ -40,17 +40,20 @@ import {
 } from '../utilities/utilities.js';
 
 test('${testName}', async ({ page }) => {
+    // İlk adımda sayfanın default "load" state'ini beklemek isterseniz (opsiyonel):
     await waitForLoadState(page);
+
     console.log("Test '${testName}' başladı...\\n");
 `;
 
         steps.forEach((step, index) => {
             const { mainLabel, testButton, type, selectedStep, value } = step;
             const stepNumber = index + 1;
-            const stepDesc = 'Step #' + stepNumber + ' - ' + testButton;
+            const stepDesc = `Step #${stepNumber} - ${testButton}`;
 
             if (mainLabel === 'Test Steps') {
-                // Goto URL
+
+                // 1) Goto URL
                 if (testButton === 'Goto URL') {
                     testScript += `
     await page.goto('${selectedStep}');
@@ -59,17 +62,18 @@ test('${testName}', async ({ page }) => {
                     return;
                 }
 
-                // Click Button
+                // 2) Click Button
                 if (testButton === 'Click Button') {
                     let finalLocator = '';
                     if (type === 'xpath') {
-                        // Eğer "//" ile başlıyorsa tekrar eklemeyelim
+                        // XPath ise, "//" ekleyelim
                         if (selectedStep.startsWith('//')) {
                             finalLocator = selectedStep;
                         } else {
                             finalLocator = '//' + selectedStep;
                         }
                     } else if (type === 'id') {
+                        // ID ise "#..."
                         finalLocator = '#' + selectedStep;
                     } else {
                         // selector
@@ -85,7 +89,7 @@ test('${testName}', async ({ page }) => {
                     return;
                 }
 
-                // Fill Button
+                // 3) Fill Button
                 if (testButton === 'Fill Button') {
                     let finalLocator = '';
                     if (type === 'xpath') {
@@ -111,7 +115,29 @@ test('${testName}', async ({ page }) => {
                     return;
                 }
 
-                // Diğer testButton
+                // 4) Wait For Timeout
+                if (testButton === 'Wait For Timeout') {
+                    // Kullanıcının girdiği süre (ms)
+                    const waitTime = value || 3000; // default 3000 ms
+                    testScript += `
+    await customWaitForTimeout(${waitTime});
+    console.log("${stepDesc} - Waited for ${waitTime} ms\\n");
+`;
+                    return;
+                }
+
+                // 5) Wait For Load State
+                if (testButton === 'Wait For Load State') {
+                    // Kullanıcının girdiği load state (örn: 'load', 'domcontentloaded', 'networkidle')
+                    const loadStateValue = value || 'load';
+                    testScript += `
+    await page.waitForLoadState('${loadStateValue}');
+    console.log("${stepDesc} - Waited for load state: ${loadStateValue}\\n");
+`;
+                    return;
+                }
+
+                // Diğer testButton (henüz tanımlı değilse)
                 testScript += `
     console.log("${stepDesc} - (Henüz özel işlem tanımlanmadı)\\n");
 `;
@@ -123,11 +149,13 @@ test('${testName}', async ({ page }) => {
             }
         });
 
+        // Test bitişi
         testScript += `
     console.log("Test '${testName}' bitti.\\n");
 });
 `;
 
+        // Dosya ismi: testName'deki boşlukları alt çizgi ile değiştir
         const testFileName = testName.replace(/\s+/g, '_') + '.spec.js';
         const testFilePath = path.join(TESTS_DIR, testFileName);
         fs.writeFileSync(testFilePath, testScript, 'utf-8');

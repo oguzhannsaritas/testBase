@@ -157,7 +157,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                     const label = getButtonLabel(stepId);
                     const isOpen = openIds.includes(stepId);
 
-                    // Goto URL
+                    // 1) Goto URL
                     if (mainLabel === "Test Steps" && testButton === "Goto URL") {
                         return (
                             <div key={stepId} className="flex items-center space-x-2 relative">
@@ -229,15 +229,451 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                         );
                     }
 
-                    // Click Button / Fill Button (Test Steps)
+                    // 2) Test Steps (Click Button / Fill Button / Wait For Timeout / Wait For Load State ...)
                     if (mainLabel === "Test Steps") {
+                        // CLICK BUTTON
+                        if (testButton === "Click Button") {
+                            return (
+                                <div key={stepId} className="flex items-center space-x-2 relative">
+                                    <button
+                                        className="w-32 min-w-32 rounded-md h-7 px-3
+                                        shadow-md border border-black/10
+                                        flex items-center justify-center text-black text-[13px]
+                                        bg-white/50 transition-colors whitespace-nowrap"
+                                    >
+                                        {testButton}
+                                    </button>
+                                    <div className="h-4 w-4">
+                                        <svg
+                                            className="z-[5px]"
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+
+                                    {/* Dropdown => selector / id / xpath */}
+                                    <div
+                                        ref={(el) => (dropdownRefs.current[stepId] = el)}
+                                        className="relative inline-block"
+                                    >
+                                        <button
+                                            onClick={() => handleToggle(stepId)}
+                                            className="w-28 rounded-md px-2 py-1 bg-white/50 border border-black/10 text-black text-sm
+                                                hover:bg-white/65 transition-colors"
+                                        >
+                                            {label}
+                                        </button>
+                                        <div
+                                            className={`
+                                                absolute left-0 mt-1 w-24 z-1
+                                                bg-white/100 border border-black/10 rounded shadow-md text-black text-sm
+                                                transition-all duration-300 overflow-hidden
+                                                ${
+                                                isOpen
+                                                    ? "max-h-40 py-1 opacity-100"
+                                                    : "max-h-0 py-0 opacity-0 pointer-events-none"
+                                            }
+                                            `}
+                                        >
+                                            {getMenuItems(type).map((item) => {
+                                                const itemLabel =
+                                                    item === "id"
+                                                        ? "ID"
+                                                        : item === "xpath"
+                                                            ? "XPath"
+                                                            : "Selector";
+                                                return (
+                                                    <div
+                                                        key={item}
+                                                        className="px-2 ml-[2px] mb-1 py-1 w-[90px] hover:bg-gray-200 border border-black/20 rounded-md cursor-pointer"
+                                                        onClick={() => handleSelect(stepId, item)}
+                                                    >
+                                                        {itemLabel}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    <div className="h-4 w-4">
+                                        <svg
+                                            className="z-[9999]"
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+
+                                    {/* Tek input => selectedStep */}
+                                    <input
+                                        className="text-black bg-white/50 border border-opacity-5 border-black/10
+                                        rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
+                                        placeholder="Locator"
+                                        value={selectedStep || ""}
+                                        onChange={(e) =>
+                                            handleInputChange(stepId, "selectedStep", e.target.value)
+                                        }
+                                    />
+
+                                    <div className="h-5 w-5 flex flex-col">
+                                        <svg
+                                            className="z-[9999] cursor-pointer"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            onClick={() => handleRemoveStepClick(stepId)}
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                fill="none"
+                                            />
+                                            <line
+                                                x1="7"
+                                                y1="12"
+                                                x2="17"
+                                                y2="12"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        // FILL BUTTON
+                        if (testButton === "Fill Button") {
+                            return (
+                                <div key={stepId} className="flex items-center space-x-2 relative">
+                                    <button
+                                        className="w-32 min-w-32 rounded-md h-7 px-3
+                                        shadow-md border border-black/10
+                                        flex items-center justify-center text-black text-[13px]
+                                        bg-white/50 transition-colors whitespace-nowrap"
+                                    >
+                                        {testButton}
+                                    </button>
+                                    <div className="h-4 w-4">
+                                        <svg
+                                            className="z-[5px]"
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+
+                                    {/* Dropdown => selector / id / xpath */}
+                                    <div
+                                        ref={(el) => (dropdownRefs.current[stepId] = el)}
+                                        className="relative inline-block"
+                                    >
+                                        <button
+                                            onClick={() => handleToggle(stepId)}
+                                            className="w-28 rounded-md px-2 py-1 bg-white/50 border border-black/10 text-black text-sm
+                                                hover:bg-white/65 transition-colors"
+                                        >
+                                            {label}
+                                        </button>
+                                        <div
+                                            className={`
+                                                absolute left-0 mt-1 w-24 z-1
+                                                bg-white/100 border border-black/10 rounded shadow-md text-black text-sm
+                                                transition-all duration-300 overflow-hidden
+                                                ${
+                                                isOpen
+                                                    ? "max-h-40 py-1 opacity-100"
+                                                    : "max-h-0 py-0 opacity-0 pointer-events-none"
+                                            }
+                                            `}
+                                        >
+                                            {getMenuItems(type).map((item) => {
+                                                const itemLabel =
+                                                    item === "id"
+                                                        ? "ID"
+                                                        : item === "xpath"
+                                                            ? "XPath"
+                                                            : "Selector";
+                                                return (
+                                                    <div
+                                                        key={item}
+                                                        className="px-2 ml-[2px] mb-1 py-1 w-[90px] hover:bg-gray-200 border border-black/20 rounded-md cursor-pointer"
+                                                        onClick={() => handleSelect(stepId, item)}
+                                                    >
+                                                        {itemLabel}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    <div className="h-4 w-4">
+                                        <svg
+                                            className="z-[9999]"
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+
+                                    {/* İki input => Locator + Value */}
+                                    <div className="flex flex-col">
+                                        {/* locator (selectedStep) */}
+                                        <input
+                                            className="text-black bg-white/50 border border-opacity-5 border-black/10
+                                                rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
+                                            placeholder="Locator"
+                                            value={selectedStep || ""}
+                                            onChange={(e) =>
+                                                handleInputChange(stepId, "selectedStep", e.target.value)
+                                            }
+                                        />
+                                        {/* value (Fill text) */}
+                                        <input
+                                            className="text-black bg-white/50 border border-opacity-5 border-black/10
+                                                rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65 mt-2"
+                                            placeholder="Değer"
+                                            value={value || ""}
+                                            onChange={(e) =>
+                                                handleInputChange(stepId, "value", e.target.value)
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className="h-5 w-5 flex flex-col">
+                                        <svg
+                                            className="z-[9999] cursor-pointer"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            onClick={() => handleRemoveStepClick(stepId)}
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                fill="none"
+                                            />
+                                            <line
+                                                x1="7"
+                                                y1="12"
+                                                x2="17"
+                                                y2="12"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        // WAIT FOR TIMEOUT
+                        if (testButton === "Wait For Timeout") {
+                            return (
+                                <div key={stepId} className="flex items-center space-x-2 relative">
+                                    <button
+                                        className="w-32 min-w-32 rounded-md h-7 px-3
+                                        shadow-md border border-black/10
+                                        flex items-center justify-center text-black text-[13px]
+                                        bg-white/50 transition-colors whitespace-nowrap"
+                                    >
+                                        {testButton}
+                                    </button>
+                                    <div className="h-4 w-4">
+                                        <svg
+                                            className="z-[5px]"
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                    {/* Tek input => bekleme süresi */}
+                                    <input
+                                        className="text-black bg-white/50 border border-opacity-5 border-black/10
+                                            rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
+                                        placeholder="Süre (ms)"
+                                        value={value || ""}
+                                        onChange={(e) =>
+                                            handleInputChange(stepId, "value", e.target.value)
+                                        }
+                                    />
+                                    <div className="h-5 w-5 flex flex-col">
+                                        <svg
+                                            className="z-[9999] cursor-pointer"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            onClick={() => handleRemoveStepClick(stepId)}
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                fill="none"
+                                            />
+                                            <line
+                                                x1="7"
+                                                y1="12"
+                                                x2="17"
+                                                y2="12"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        // WAIT FOR LOAD STATE
+                        if (testButton === "Wait For Load State") {
+                            return (
+                                <div key={stepId} className="flex items-center space-x-2 relative">
+                                    <button
+                                        className="w-32 min-w-32 rounded-md h-7 px-3
+                                        shadow-md border border-black/10
+                                        flex items-center justify-center text-black text-[13px]
+                                        bg-white/50 transition-colors whitespace-nowrap"
+                                    >
+                                        {testButton}
+                                    </button>
+                                    <div className="h-4 w-4">
+                                        <svg
+                                            className="z-[5px]"
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                    {/* Tek input => load state */}
+                                    <input
+                                        className="text-black bg-white/50 border border-opacity-5 border-black/10
+                                            rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
+                                        placeholder="load / networkidle..."
+                                        value={value || ""}
+                                        onChange={(e) =>
+                                            handleInputChange(stepId, "value", e.target.value)
+                                        }
+                                    />
+                                    <div className="h-5 w-5 flex flex-col">
+                                        <svg
+                                            className="z-[9999] cursor-pointer"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            onClick={() => handleRemoveStepClick(stepId)}
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                fill="none"
+                                            />
+                                            <line
+                                                x1="7"
+                                                y1="12"
+                                                x2="17"
+                                                y2="12"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        // Henüz tanımlamadığınız diğer testButton durumları
                         return (
                             <div key={stepId} className="flex items-center space-x-2 relative">
                                 <button
                                     className="w-32 min-w-32 rounded-md h-7 px-3
-                                    shadow-md border border-black/10
-                                    flex items-center justify-center text-black text-[13px]
-                                    bg-white/50 transition-colors whitespace-nowrap"
+                                        shadow-md border border-black/10
+                                        flex items-center justify-center text-black text-[13px]
+                                        bg-white/50 transition-colors whitespace-nowrap"
                                 >
                                     {testButton}
                                 </button>
@@ -259,107 +695,9 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                                         />
                                     </svg>
                                 </div>
-
-                                {/* Dropdown => selector / id / xpath */}
-                                <div
-                                    ref={(el) => (dropdownRefs.current[stepId] = el)}
-                                    className="relative inline-block"
-                                >
-                                    <button
-                                        onClick={() => handleToggle(stepId)}
-                                        className="w-28 rounded-md px-2 py-1 bg-white/50 border border-black/10 text-black text-sm
-                                            hover:bg-white/65 transition-colors"
-                                    >
-                                        {label}
-                                    </button>
-                                    <div
-                                        className={`
-                                            absolute left-0 mt-1 w-24 z-1
-                                            bg-white/100 border border-black/10 rounded shadow-md text-black text-sm
-                                            transition-all duration-300 overflow-hidden
-                                            ${
-                                            isOpen
-                                                ? "max-h-40 py-1 opacity-100"
-                                                : "max-h-0 py-0 opacity-0 pointer-events-none"
-                                        }
-                                        `}
-                                    >
-                                        {getMenuItems(type).map((item) => {
-                                            const itemLabel =
-                                                item === "id"
-                                                    ? "ID"
-                                                    : item === "xpath"
-                                                        ? "XPath"
-                                                        : "Selector";
-                                            return (
-                                                <div
-                                                    key={item}
-                                                    className="px-2 ml-[2px] mb-1 py-1 w-[90px] hover:bg-gray-200 border border-black/20 rounded-md cursor-pointer"
-                                                    onClick={() => handleSelect(stepId, item)}
-                                                >
-                                                    {itemLabel}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                <div className="h-4 w-4">
-                                    <svg
-                                        className="z-[9999]"
-                                        width="17"
-                                        height="16"
-                                        viewBox="0 0 17 16"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
-                                            stroke="black"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
-                                </div>
-
-                                {/* Eğer Fill Button ise 2 input: locator + value */}
-                                {testButton === "Fill Button" ? (
-                                    <>
-                                        {/* locator (selectedStep) */}
-                                        <input
-                                            className="text-black bg-white/50 border border-opacity-5 border-black/10
-                                                rounded px-2 py-1 text-sm w-28 focus:outline-none hover:bg-white/65"
-                                            placeholder="Locator"
-                                            value={selectedStep || ""}
-                                            onChange={(e) =>
-                                                handleInputChange(stepId, "selectedStep", e.target.value)
-                                            }
-                                        />
-                                        {/* value (Fill text) */}
-                                        <input
-                                            className="text-black bg-white/50 border border-opacity-5 border-black/10
-                                                rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
-                                            placeholder="Değer"
-                                            value={value || ""}
-                                            onChange={(e) =>
-                                                handleInputChange(stepId, "value", e.target.value)
-                                            }
-                                        />
-                                    </>
-                                ) : (
-                                    // Goto URL ve Click Button: tek input => selectedStep
-                                    <input
-                                        className="text-black bg-white/50 border border-opacity-5 border-black/10
-                                            rounded px-2 py-1 text-sm w-40 focus:outline-none hover:bg-white/65"
-                                        placeholder="Locator"
-                                        value={selectedStep || ""}
-                                        onChange={(e) =>
-                                            handleInputChange(stepId, "selectedStep", e.target.value)
-                                        }
-                                    />
-                                )}
-
+                                <span className="text-black text-sm">
+                                    (Henüz özel işlem tanımlanmadı)
+                                </span>
                                 <div className="h-5 w-5 flex flex-col">
                                     <svg
                                         className="z-[9999] cursor-pointer"
@@ -393,7 +731,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                         );
                     }
 
-                    // Diğer adımlar (Locations, Block, vs.)
+                    // 3) Diğer adımlar (Locations, Block, vs.)
                     return (
                         <div key={stepId} className="flex items-center space-x-2 relative">
                             <button
