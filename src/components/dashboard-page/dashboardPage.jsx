@@ -16,6 +16,9 @@ export function DashboardPage() {
     const [selectedSteps, setSelectedSteps] = useState([]);
     const [modalContent, setModalContent] = useState(null);
 
+    // === [EK] test bittikten sonra gelen video, thumbnail gibi bilgileri tutacağız
+    const [videoInfo, setVideoInfo] = useState(null);
+
     // 2 param: mainLabel ve testButton
     const handleAddStep = (mainLabel, testButton) => {
         const newStep = {
@@ -34,6 +37,12 @@ export function DashboardPage() {
         setSelectedSteps((prev) => prev.filter((step) => step.id !== stepId));
     };
 
+    // === [EK] Bu fonksiyon, testPanel’den sunucudan gelen video/thumbnail bilgisini alır
+    const handleVideoInfo = (info) => {
+        // info örnek: { testName: 'MyTest', video: 'MyTest.mp4', thumbnail: 'MyTest.png' }
+        setVideoInfo(info);
+    };
+
     return (
         <div className="flex flex-col w-full relative">
             <Banner className=" flex relative z-[9999]"/>
@@ -48,6 +57,8 @@ export function DashboardPage() {
                 steps={selectedSteps}
                 onClearSteps={handleClearSteps}
                 onRemoveStep={handleRemoveStep}
+                // === [EK] testPanel “Run Test” sonrası videoInfo’yu buraya döndürecek
+                onVideoInfo={handleVideoInfo}
             />
 
             {/* Alttaki butonlar da step ekliyor */}
@@ -60,7 +71,9 @@ export function DashboardPage() {
 
             <ShareEmail />
             <TestSteps />
-            <TestFailureWindow />
+
+            {/* TestFailureWindow'a videoInfo prop olarak yolluyoruz */}
+            <TestFailureWindow videoInfo={videoInfo} />
 
             <div className="flex flex-col w-full justify-center">
                 <RecordWindows setModalContent={setModalContent} />

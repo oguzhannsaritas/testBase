@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 
-export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
+export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
     const [openIds, setOpenIds] = useState([]);
     const [locators, setLocators] = useState({});
     const dropdownRefs = useRef({});
@@ -121,7 +121,19 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                 return;
             }
             console.log("Test Output:", data.output);
-            alert("Test başarıyla tamamlandı!");
+            // Test bitti mesajı
+            alert("Test başarıyla tamamlandı!\nVideo kaydedildi: videos/" + testName + ".mp4");
+
+            // === [EK] Server'ın döndürdüğü "video" ve "thumbnail" değerlerini alalım
+            // data.video => örn "MyTest.mp4"
+            // data.thumbnail => örn "MyTest.png"
+            if (onVideoInfo) {
+                onVideoInfo({
+                    testName: testName,
+                    video: data.video,         // "MyTest.mp4"
+                    thumbnail: data.thumbnail, // "MyTest.png"
+                });
+            }
         } catch (err) {
             console.error("Fetch error:", err);
             alert("Sunucuya bağlanırken hata oluştu!");
@@ -157,6 +169,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep }) {
                     const label = getButtonLabel(stepId);
                     const isOpen = openIds.includes(stepId);
 
+                    // (Aşağıdaki step render'ları senin orijinal kodun, değiştirmedim)
                     // 1) Goto URL
                     if (mainLabel === "Test Steps" && testButton === "Goto URL") {
                         return (
