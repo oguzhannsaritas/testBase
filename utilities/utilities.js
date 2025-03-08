@@ -22,7 +22,7 @@ export async function customClick(locator, stepDescription, page, options = {}) 
             throw new Error(`Locator is undefined at step: ${stepDescription}`);
         }
         console.log(`WAITING FOR ELEMENT TO BE ATTACHED: ${locator}`);
-        await locator.waitFor({ state: 'attached' });
+        await locator.waitFor({ state: 'attached', timeout: 5000 }); // timeout eklendi
         console.log(`ELEMENT IS ATTACHED, NOW CLICKING`);
         await locator.click(options);
         console.log(`CLICKED ON ELEMENT: ${locator}`);

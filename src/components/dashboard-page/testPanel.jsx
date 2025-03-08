@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
+import {toast} from "sonner";
 
 export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
     const [openIds, setOpenIds] = useState([]);
@@ -91,17 +92,20 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
     // Run Test
     const handleRunTest = async () => {
         if (!testName.trim()) {
-            alert("Lütfen test ismi giriniz!");
+            toast.error("Lütfen test ismi giriniz!");
             return;
         }
+
+        const toastId = toast.loading("Test başlatıldı, lütfen bekleyin...");
+
         // steps -> locators (type, selectedStep, value)
-        const mergedSteps = steps.map((step, i) => {
+        const mergedSteps = steps.map((step) => {
             const { type = "", selectedStep = "", value = "" } = locators[step.id] || {};
             return {
                 ...step,
                 type,
                 selectedStep,
-                value
+                value,
             };
         });
 
@@ -111,32 +115,42 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     testName,
-                    steps: mergedSteps
+                    steps: mergedSteps,
                 }),
             });
+
             const data = await response.json();
-            if (!response.ok) {
+
+            // Eğer API 200 dönüyorsa success toast'ı göster
+            if (response.status === 200) {
+                // setTimeout içerisinde
+                setTimeout(() => {
+                    console.log(response.status, "=== Gelen response değeri ");
+                    toast.success(
+                        `Test başarıyla tamamlandı! 🎉`,
+                        { id: toastId }
+                    );
+                }, 1000);
+
+            } else {
                 console.error("Test hata:", data.error);
-                alert("Test çalışırken hata oluştu!");
+                toast.dismiss(toastId);
+                toast.error("Test çalıştırılırken hata oluştu!");
                 return;
             }
-            console.log("Test Output:", data.output);
-            // Test bitti mesajı
-            alert("Test başarıyla tamamlandı!\nVideo kaydedildi: videos/" + testName + ".mp4");
 
-            // === [EK] Server'ın döndürdüğü "video" ve "thumbnail" değerlerini alalım
-            // data.video => örn "MyTest.mp4"
-            // data.thumbnail => örn "MyTest.png"
+            // API'den gelen video/thumbnail bilgilerini işle
             if (onVideoInfo) {
                 onVideoInfo({
                     testName: testName,
-                    video: data.video,         // "MyTest.mp4"
-                    thumbnail: data.thumbnail, // "MyTest.png"
+                    video: data.video,         // örn: "MyTest.mp4"
+                    thumbnail: data.thumbnail, // örn: "MyTest.png"
                 });
             }
         } catch (err) {
             console.error("Fetch error:", err);
-            alert("Sunucuya bağlanırken hata oluştu!");
+            toast.dismiss(toastId);
+            toast.error("Sunucuya bağlanırken hata oluştu!");
         }
     };
 

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner"; // Sonner toast bildirimini import ettik
 
 export function TestFailureWindow({ videoInfo }) {
     const [isVideoOpen, setIsVideoOpen] = useState(false);
     const [isImageOpen, setIsImageOpen] = useState(false);
 
-    const fallbackThumbnail = "/arkaplan.png";
+    const fallbackThumbnail = "/img.png";
     const fallbackVideo = null;
 
     const finalThumbnailSrc = videoInfo && videoInfo.thumbnail
@@ -16,6 +17,22 @@ export function TestFailureWindow({ videoInfo }) {
     const finalVideoSrc = videoInfo && videoInfo.video
         ? "/videos/" + videoInfo.video
         : fallbackVideo;
+
+    // Video ikonuna tıklanıldığında çalışacak fonksiyon
+    const handleVideoClick = () => {
+        if (finalVideoSrc) {
+            setIsVideoOpen(true);
+        } else {
+            toast.error(
+                <>
+                    The test has not been run, please run the test.
+                    <br />
+                    If you have run the test, please wait
+                </>
+            );
+        }
+    };
+
 
     return (
         <div className="flex flex-row space-x-2 relative justify-center items-center left-[0.6%] top-[147px]">
@@ -32,7 +49,7 @@ export function TestFailureWindow({ videoInfo }) {
             </svg>
 
             {/* Thumbnail Resim */}
-            <div className="absolute w-[35%] h-64 left-[32.2%] top-[75px]  transition-transform duration-300">
+            <div className="absolute w-[35%] h-64 left-[32.2%] top-[75px] transition-transform duration-300">
                 <img
                     src={finalThumbnailSrc}
                     alt="Test Failure"
@@ -40,17 +57,17 @@ export function TestFailureWindow({ videoInfo }) {
                     onClick={() => setIsImageOpen(true)}
                 />
 
-                {/* Play İkonu (Ortaya Eklendi) */}
+                {/* Play İkonu */}
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    onClick={() => finalVideoSrc && setIsVideoOpen(true)}
+                    onClick={handleVideoClick}
                     width="60"
                     height="60"
                     viewBox="0 0 24 24"
                     fill="black"
                     className="absolute inset-0 cursor-pointer border-solid border-2 border-black hover:scale-110 transition-transform duration-300 rounded-full m-auto opacity-80"
                 >
-                    <path d="M8 5v14l11-7z"/>
+                    <path d="M8 5v14l11-7z" />
                 </svg>
             </div>
 

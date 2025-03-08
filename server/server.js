@@ -73,17 +73,18 @@ import {
 } from '../utilities/utilities.js';
 
 test('${testName}', async ({ browser }) => {
-    // Video kaydı için context
+    // Video kaydı için context oluşturuluyor
     const context = await browser.newContext({
-        recordVideo: {
-            dir: 'videos/',
-        }
+        recordVideo: { dir: 'videos/' }
     });
     const page = await context.newPage();
+    try {
+        await waitForLoadState(page);
+        console.log("Test '${testName}' başladı...\\n");
 
-    await waitForLoadState(page);
-    console.log("Test '${testName}' başladı...\\n");
+        // --- Test adımlarınız burada eklenecek ---
 `;
+
 
         // Steps döngüsü
         steps.forEach((step, index) => {
@@ -158,8 +159,15 @@ test('${testName}', async ({ browser }) => {
         });
 
         testScript += `
-    console.log("Test '${testName}' bitti.\\n");
-    await context.close();
+        console.log("Test '${testName}' bitti.\\n");
+    } catch (error) {
+        console.error("Test sırasında hata oluştu:", error);
+        console.log("Test hata oluştu :", error);
+        throw error;
+    } finally {
+    console.log("Test tamamlandı, context kapatılıyor...");
+        await context.close(); // Hata alsa bile context kapanır.
+    }
 });
 `;
 
@@ -173,6 +181,10 @@ test('${testName}', async ({ browser }) => {
         exec(`npx playwright test "${testFilePath}"`, (error, stdout, stderr) => {
             if (error) {
                 console.error('❌ Test Execution Error:', stderr);
+                exec("pkill -f playwright", () => {
+                    console.log("Playwright işlemi temizlendi.");
+                });
+
                 return res.status(500).json({ error: stderr });
             }
             console.log('✅ Test Output:', stdout);
@@ -213,17 +225,25 @@ test('${testName}', async ({ browser }) => {
                 exec(ffmpegThumbCmd, (thumbErr) => {
                     if (thumbErr) {
                         console.error('Thumbnail Error:', thumbErr);
-                        // Yine de başarılı dönelim
+                        return res.json({
+                            output: stdout,
+                            video: testName + '.mp4',
+                            thumbnail: null,
+                            error: thumbErr
+                        });
                     }
                     console.log('Thumbnail created:', thumbnailPath);
 
                     // Sonuç JSON
-                    return res.json({
+                    res.json({
                         output: stdout,
                         video: testName + '.mp4',
                         thumbnail: testName + '.png'
                     });
+
+                    console.log("✅ API yanıtı döndü, frontend şimdi toast gösterebilir!");
                 });
+
             });
         });
     } catch (err) {

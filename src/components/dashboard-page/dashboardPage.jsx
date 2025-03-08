@@ -11,6 +11,7 @@ import { TestTypesButton } from "./testTypesButton.jsx";
 import { BlockButton } from "./blockButton.jsx";
 import { ShareEmail } from "./shareEmail.jsx";
 import { RecordWindows } from "./recordWindows.jsx";
+import { Toaster } from 'sonner';
 
 export function DashboardPage() {
     const [selectedSteps, setSelectedSteps] = useState([]);
@@ -45,6 +46,7 @@ export function DashboardPage() {
 
     return (
         <div className="flex flex-col w-full relative">
+            <Toaster position="bottom-right" richColors style={{ zIndex: 99999 }} />
             <Banner className=" flex relative z-[9999]"/>
 
             {/* TestStepsButtons: Kullanıcı tıkladığında step ekliyor */}
