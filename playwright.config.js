@@ -25,7 +25,7 @@ export default defineConfig({
                     slowMo: 500,
                     args: [
                         '--start-maximized',
-                        '--window-size=1920,1080',
+                        '--window-size=1710,1112',
                     ],
                 },
             },

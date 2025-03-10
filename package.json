@@ -8,10 +8,14 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/server.js",
-    "server:dev": "nodemon server/server.js"
+    "server:dev": "nodemon server/server.js",
+    "jenkins-start": "brew services start jenkins-lts",
+    "jenkins-stop": "brew services stop jenkins-lts",
+    "jenkins-restart": "brew services restart jenkins-lts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.6",
+    "axios": "^1.8.2",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

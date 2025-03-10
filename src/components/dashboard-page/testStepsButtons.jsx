@@ -64,8 +64,34 @@ export default function TestStepsButtons({ onAddStep }) {
 
     // Adım ekleme
     const handleAddClick = (testButton) => {
-        onAddStep("Test Steps", testButton);
+        let stepData = {
+            mainLabel: "Test Steps",
+            testButton: testButton,
+            type: "",  // Varsayılan olarak boş
+            selectedStep: "",
+            value: "",
+        };
+
+        if (testButton === "Goto URL") {
+            stepData.selectedStep = "https://example.com";  // Varsayılan URL
+        } else if (testButton === "Click Button") {
+            stepData.type = "selector";  // Varsayılan locator tipi
+            stepData.selectedStep = "#button-id";  // Varsayılan selector
+        } else if (testButton === "Fill Button") {
+            stepData.type = "selector";
+            stepData.selectedStep = "#input-id";  // Varsayılan input alanı
+            stepData.value = "Test Value";  // Varsayılan doldurulacak değer
+        } else if (testButton === "Wait For Timeout") {
+            stepData.value = "3000";  // Varsayılan bekleme süresi (ms)
+        }else if (testButton === "PlaceHolder Fill Button") {
+            stepData.type = "selector";
+            stepData.selectedStep = "placeholder fill element";  // Varsayılan element
+        }
+
+        // Test adımını backend için uygun formatta test paneline ekle
+        onAddStep("Test Steps", testButton, stepData);
     };
+
 
     return (
         <div className="relative flex w-full top-4 justify-start" ref={containerRef}>
@@ -128,7 +154,7 @@ export default function TestStepsButtons({ onAddStep }) {
                         <div className="relative h-full overflow-hidden flex-1 mx-2">
                             <div
                                 className="absolute left-0 top-[2px] h-full flex transition-transform duration-300"
-                                style={{ transform: `translateX(-${translateX}px)` }}
+                                style={{transform: `translateX(-${translateX}px)`}}
                             >
                                 {/* Goto URL */}
                                 <button
@@ -154,13 +180,36 @@ export default function TestStepsButtons({ onAddStep }) {
                                     Click Button
                                 </button>
 
-                                {/* Fill Button */}
+                                {/* PlaceHolder Click Button */}
                                 <button
                                     className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
                                         relative hover:border hover:border-white/65
                                         flex items-center justify-center text-black text-[13px]
                                         hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
                                     ref={(el) => (buttonRefs.current[2] = el)}
+                                    onClick={() => handleAddClick("PlaceHolder Click Button")}
+                                >
+                                    PlaceHolder Click Button
+                                </button>
+
+                                <button
+                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
+                                        relative hover:border hover:border-white/65
+                                        flex items-center justify-center text-black text-[13px]
+                                        hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[3] = el)}
+                                    onClick={() => handleAddClick("PlaceHolder Fill Button")}
+                                >
+                                    PlaceHolder Fill Button
+                                </button>
+
+                                {/* Fill Button */}
+                                <button
+                                    className="flex-shrink-0 rounded-full h-6 px-3 hover:shadow-md
+                                        relative hover:border hover:border-white/65
+                                        flex items-center justify-center text-black text-[13px]
+                                        hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
+                                    ref={(el) => (buttonRefs.current[4] = el)}
                                     onClick={() => handleAddClick("Fill Button")}
                                 >
                                     Fill Button
@@ -172,7 +221,7 @@ export default function TestStepsButtons({ onAddStep }) {
                                         relative hover:border hover:border-white/65
                                         flex items-center justify-center text-black text-[13px]
                                         hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[3] = el)}
+                                    ref={(el) => (buttonRefs.current[5] = el)}
                                     onClick={() => handleAddClick("Api Kontrol")}
                                 >
                                     Api Kontrol
@@ -182,7 +231,7 @@ export default function TestStepsButtons({ onAddStep }) {
                                         relative hover:border hover:border-white/65
                                         flex items-center justify-center text-black text-[13px]
                                         hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[4] = el)}
+                                    ref={(el) => (buttonRefs.current[6] = el)}
                                     onClick={() => handleAddClick("Api Payload")}
                                 >
                                     Api Payload
@@ -192,7 +241,7 @@ export default function TestStepsButtons({ onAddStep }) {
                                         relative hover:border hover:border-white/65
                                         flex items-center justify-center text-black text-[13px]
                                         hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[5] = el)}
+                                    ref={(el) => (buttonRefs.current[7] = el)}
                                     onClick={() => handleAddClick("Response Kontrol")}
                                 >
                                     Response Kontrol
@@ -204,7 +253,7 @@ export default function TestStepsButtons({ onAddStep }) {
       relative hover:border hover:border-white/65
       flex items-center justify-center text-black text-[13px]
       hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[6] = el)} // index uygun şekilde ayarlayabilirsiniz
+                                    ref={(el) => (buttonRefs.current[8] = el)} // index uygun şekilde ayarlayabilirsiniz
                                     onClick={() => handleAddClick("Wait For Timeout")}
                                 >
                                     Wait For Timeout
@@ -216,7 +265,7 @@ export default function TestStepsButtons({ onAddStep }) {
       relative hover:border hover:border-white/65
       flex items-center justify-center text-black text-[13px]
       hover:bg-black/10 transition-colors cursor-pointer whitespace-nowrap"
-                                    ref={(el) => (buttonRefs.current[7] = el)} // index uygun şekilde ayarlayabilirsiniz
+                                    ref={(el) => (buttonRefs.current[9] = el)} // index uygun şekilde ayarlayabilirsiniz
                                     onClick={() => handleAddClick("Wait For Load State")}
                                 >
                                     Wait For Load State

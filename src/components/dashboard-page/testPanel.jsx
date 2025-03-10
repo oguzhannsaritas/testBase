@@ -98,7 +98,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
 
         const toastId = toast.loading("Test başlatıldı, lütfen bekleyin...");
 
-        // steps -> locators (type, selectedStep, value)
+        // Backend'in anlayacağı formatta test adımlarını hazırla
         const mergedSteps = steps.map((step) => {
             const { type = "", selectedStep = "", value = "" } = locators[step.id] || {};
             return {
@@ -121,17 +121,11 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
 
             const data = await response.json();
 
-            // Eğer API 200 dönüyorsa success toast'ı göster
             if (response.status === 200) {
-                // setTimeout içerisinde
                 setTimeout(() => {
                     console.log(response.status, "=== Gelen response değeri ");
-                    toast.success(
-                        `Test başarıyla tamamlandı! 🎉`,
-                        { id: toastId }
-                    );
+                    toast.success(`Test başarıyla tamamlandı! 🎉`, { id: toastId });
                 }, 1000);
-
             } else {
                 console.error("Test hata:", data.error);
                 toast.dismiss(toastId);
@@ -139,12 +133,11 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
                 return;
             }
 
-            // API'den gelen video/thumbnail bilgilerini işle
             if (onVideoInfo) {
                 onVideoInfo({
                     testName: testName,
-                    video: data.video,         // örn: "MyTest.mp4"
-                    thumbnail: data.thumbnail, // örn: "MyTest.png"
+                    video: data.video,
+                    thumbnail: data.thumbnail,
                 });
             }
         } catch (err) {
@@ -153,6 +146,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
             toast.error("Sunucuya bağlanırken hata oluştu!");
         }
     };
+
 
     return (
         <div
@@ -660,6 +654,166 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
                                             handleInputChange(stepId, "value", e.target.value)
                                         }
                                     />
+                                    <div className="h-5 w-5 flex flex-col">
+                                        <svg
+                                            className="z-[9999] cursor-pointer"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            onClick={() => handleRemoveStepClick(stepId)}
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                fill="none"
+                                            />
+                                            <line
+                                                x1="7"
+                                                y1="12"
+                                                x2="17"
+                                                y2="12"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            );
+                        }
+                        if (testButton === "PlaceHolder Click Button") {
+                            return (
+                                <div key={stepId} className="flex items-center space-x-2 relative">
+                                    <button
+                                        className="w-32 min-w-32 rounded-md h-7 px-3
+                                        shadow-md border border-black/10
+                                        flex items-center justify-center text-black text-[13px]
+                                        bg-white/50 transition-colors whitespace-nowrap"
+                                    >
+                                        {testButton}
+                                    </button>
+                                    <div className="h-4 w-4">
+                                        <svg
+                                            className="z-[5px]"
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                    {/* Tek input => bekleme süresi */}
+                                    <input
+                                        className="text-black bg-white/50 border border-opacity-5 border-black/10
+                                            rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
+                                        placeholder="PlaceHolder Value"
+                                        value={value || ""}
+                                        onChange={(e) =>
+                                            handleInputChange(stepId, "value", e.target.value)
+                                        }
+                                    />
+                                    <div className="h-5 w-5 flex flex-col">
+                                        <svg
+                                            className="z-[9999] cursor-pointer"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            onClick={() => handleRemoveStepClick(stepId)}
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                fill="none"
+                                            />
+                                            <line
+                                                x1="7"
+                                                y1="12"
+                                                x2="17"
+                                                y2="12"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            );
+                        }
+                        if (testButton === "PlaceHolder Fill Button") {
+                            return (
+                                <div key={stepId} className="flex items-center space-x-2 relative">
+                                    <button
+                                        className="w-32 min-w-32 rounded-md h-7 px-3
+                                        shadow-md border border-black/10
+                                        flex items-center justify-center text-black text-[13px]
+                                        bg-white/50 transition-colors whitespace-nowrap"
+                                    >
+                                        {testButton}
+                                    </button>
+
+
+
+                                    <div className="h-4 w-4">
+                                        <svg
+                                            className="z-[9999]"
+                                            width="17"
+                                            height="16"
+                                            viewBox="0 0 17 16"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M5.83337 13.3333L11.1667 7.99996L5.83337 2.66663"
+                                                stroke="black"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+
+                                    {/* İki input => Locator + Value */}
+                                    <div className="flex flex-col">
+                                        {/* locator (selectedStep) */}
+                                        <input
+                                            className="text-black bg-white/50 border border-opacity-5 border-black/10
+                                                rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
+                                            placeholder="PlaceHolder"
+                                            value={selectedStep || ""}
+                                            onChange={(e) =>
+                                                handleInputChange(stepId, "selectedStep", e.target.value)
+                                            }
+                                        />
+                                        {/* value (Fill text) */}
+                                        <input
+                                            className="text-black bg-white/50 border border-opacity-5 border-black/10
+                                                rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65 mt-2"
+                                            placeholder="Değer"
+                                            value={value || ""}
+                                            onChange={(e) =>
+                                                handleInputChange(stepId, "value", e.target.value)
+                                            }
+                                        />
+                                    </div>
+
                                     <div className="h-5 w-5 flex flex-col">
                                         <svg
                                             className="z-[9999] cursor-pointer"
