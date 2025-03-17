@@ -1,16 +1,33 @@
 import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function RecordWindows({ setModalContent }) {
-    const images = [
-        "/arkaplan.png", "/world.png", "/arkaplan.png", "/world.png", "/arkaplan.png",
-        "/world.png", "/arkaplan.png", "/world.png", "/arkaplan.png", "/world.png"
-    ];
-
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [images, setImages] = useState([]);
     const [isAtStart, setIsAtStart] = useState(true);
     const [isAtEnd, setIsAtEnd] = useState(false);
     const scrollContainerRef = useRef(null);
+
+    // ✅ API'den ekran görüntülerini al ve sıralama yap
+    const fetchScreenshots = async () => {
+        try {
+            const response = await fetch("http://localhost:5003/api/screenshots");
+            let data = await response.json();
+
+            // **En son eklenen en başta olacak şekilde sıralıyoruz**
+            data = data.reverse();
+
+            setImages(data);
+        } catch (error) {
+            console.error("Error fetching screenshots:", error);
+        }
+    };
+
+    // ✅ İlk yükleme ve her 5 saniyede bir kontrol et
+    useEffect(() => {
+        fetchScreenshots();
+        const interval = setInterval(fetchScreenshots, 5000);
+        return () => clearInterval(interval);
+    }, []);
 
     const openModal = (index) => {
         setModalContent(
@@ -47,53 +64,68 @@ export function RecordWindows({ setModalContent }) {
         <div className="relative flex top-[119px] flex-col items-center">
             <div className="w-[1540px] h-[238px] p-5 bg-gradient-to-b right-[162px] rounded-[10px] shadow-lg border border-white backdrop-blur-[20px] flex items-start gap-2.5 overflow-x-auto scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-100" ref={scrollContainerRef}>
                 <div className="flex gap-2.5">
-                    {images.map((src, index) => (
-                        <div
-                            key={index}
-                            className="w-96 h-48 bg-gradient-to-b border-solid to-white rounded-[10px] shadow-lg border-[1px] border-black/30 backdrop-blur-[20px] flex flex-col justify-start items-center gap-2.5 cursor-pointer p-1"
-                            onClick={() => openModal(index)}
-                        >
-                            <img src={src} alt={`Item ${index + 1}`} className="w-full h-44 object-cover rounded-[10px]" />
-                        </div>
-                    ))}
+                    {images.length === 0
+                        ? // Eğer görüntü yoksa, 5 tane placeholder göster
+                        Array.from({ length: 5 }).map((_, index) => (
+                            <div
+                                key={index}
+                                className="w-96 h-48 bg-gradient-to-b border-solid to-white rounded-[10px] shadow-lg border-[1px] border-black/30 backdrop-blur-[20px] flex flex-col justify-center items-center gap-2.5 p-1 animate-pulse"
+                            >
+                                <div className="w-5/6 h-36 bg-gray-300 rounded-[10px]"></div>
+                                <p className="text-gray-400">Görüntü bekleniyor...</p>
+                            </div>
+                        ))
+                        : // Eğer görüntüler varsa, onları göster
+                        images.map((src, index) => (
+                            <div
+                                key={index}
+                                className="w-96 h-48 bg-gradient-to-b border-solid to-white rounded-[10px] shadow-lg border-[1px] border-black/30 backdrop-blur-[20px] flex flex-col justify-start items-center gap-2.5 cursor-pointer p-1"
+                                onClick={() => openModal(index)}
+                            >
+                                <img src={`http://localhost:5003${src}`} alt={`Item ${index + 1}`} className="w-full h-44 object-cover rounded-[10px]" />
+                            </div>
+                        ))}
                 </div>
             </div>
 
             <div className="mt-2 flex items-center justify-center w-[220px] h-8 p-2 bg-white/50 rounded-full shadow-md border-[1px] border-black/30 border-solid">
                 <button
-                    onClick={() => scrollContainerRef.current.scrollBy({left: -300, behavior: "smooth"})}
+                    onClick={() => scrollContainerRef.current.scrollBy({ left: -300, behavior: "smooth" })}
                     disabled={isAtStart}
                     className={`w-7 h-7 flex items-center justify-center rounded-full border ${isAtStart ? "border-gray-200 bg-gray-100 cursor-not-allowed opacity-50" : "border-gray-300 bg-gray-100 hover:bg-gray-200 shadow-md"}`}
                 >
-                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.66675 1.66671L1.33341 7.00004L6.66675 12.3334" stroke="black" stroke-width="1.5"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-
+                    ◀
                 </button>
-                <span className="mx-6 text-lg font-medium text-gray-800">{currentIndex + 1} of {images.length}</span>
+                <span className="mx-6 text-lg font-medium text-gray-800">{images.length} görüntü</span>
                 <button
-                    onClick={() => scrollContainerRef.current.scrollBy({left: 300, behavior: "smooth"})}
+                    onClick={() => scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" })}
                     disabled={isAtEnd}
                     className={`w-7 h-7 flex items-center justify-center rounded-full border ${isAtEnd ? "border-gray-200 bg-gray-100 cursor-not-allowed opacity-50" : "border-gray-300 bg-gray-100 hover:bg-gray-200 shadow-md"}`}
                 >
-                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.33325 12.3333L6.66659 6.99996L1.33325 1.66663" stroke="black" stroke-width="1.5"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-
+                    ▶
                 </button>
             </div>
         </div>
     );
 }
 
-function ModalContent({images, initialIndex, closeModal}) {
+function ModalContent({ images, initialIndex, closeModal }) {
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
+    const goNext = () => {
+        if (currentIndex < images.length - 1) {
+            setCurrentIndex((prevIndex) => prevIndex + 1);
+        }
+    };
+
+    const goPrev = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex((prevIndex) => prevIndex - 1);
+        }
+    };
+
     return (
-        <div
-            className="fixed inset-0 backdrop-blur-[10px] bg-black/30 border-[1px] border-solid border-black/30 bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 backdrop-blur-[10px] bg-black/30 border-[1px] border-solid border-black/30 bg-opacity-50 flex justify-center items-center z-50">
             <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -101,33 +133,44 @@ function ModalContent({images, initialIndex, closeModal}) {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="relative w-[90%] h-[90%] flex justify-center items-center"
             >
+                {/* Sol buton (Önceki resim) */}
                 <button
-                    className="absolute -left-10 p-2 w-10 h-10 flex items-center justify-center cursor-pointer bg-white rounded-full shadow-md hover:bg-gray-200"
-                    onClick={() => setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev))}
+                    onClick={goPrev}
+                    disabled={currentIndex === 0}
+                    className={`absolute -left-16 cursor-pointer top-1/2 transform -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full border bg-white shadow-md hover:bg-gray-200 ${
+                        currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                 >
-                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.66675 1.66671L1.33341 7.00004L6.66675 12.3334" stroke="black" stroke-width="1.5"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                    ◀
                 </button>
-                <img src={images[currentIndex]} alt="Selected"
-                     className="max-w-full max-h-full object-contain rounded-lg"/>
+
+                {/* Kapama butonu */}
                 <button
-                    className="absolute -right-10 p-2 w-10 h-10 flex items-center justify-center cursor-pointer bg-white rounded-full shadow-md hover:bg-gray-200"
-                    onClick={() => setCurrentIndex((prev) => (prev < images.length - 1 ? prev + 1 : prev))}
-                >
-                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.33325 12.3333L6.66659 6.99996L1.33325 1.66663" stroke="black" stroke-width="1.5"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <button
-                    className="absolute top-1 -right-8  w-10 h-10 flex items-center justify-center p-2 cursor-pointer bg-white rounded-full shadow-md hover:bg-gray-200"
                     onClick={closeModal}
+                    className="absolute top-3 right-3 border border-black border-solid cursor-pointer w-10 h-10 bg-white rounded-full shadow-md hover:bg-gray-200 flex items-center justify-center"
                 >
                     X
+                </button>
+
+                {/* Resim */}
+                <img
+                    src={`http://localhost:5003${images[currentIndex]}`}
+                    alt="Selected"
+                    className="max-w-full max-h-full object-contain rounded-lg"
+                />
+
+                {/* Sağ buton (Sonraki resim) */}
+                <button
+                    onClick={goNext}
+                    disabled={currentIndex === images.length - 1}
+                    className={`absolute -right-16 cursor-pointer top-1/2 transform -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full border bg-white shadow-md hover:bg-gray-200 ${
+                        currentIndex === images.length - 1 ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                >
+                    ▶
                 </button>
             </motion.div>
         </div>
     );
 }
+

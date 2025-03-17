@@ -12,6 +12,8 @@ app.use(cors());
 const PORT = process.env.PORT || 5003;
 const TESTS_DIR = path.join(process.cwd(), 'tests');
 const VIDEOS_DIR = path.join(process.cwd(), 'videos');
+const SCREENSHOTS_DIR = path.resolve(process.cwd(), 'screenshots');
+
 
 const JENKINS_URL = 'http://localhost:8080/job/testBase/build';
 const JENKINS_USER = 'oguzhansaritas';
@@ -237,6 +239,22 @@ test('${testName}', async ({  }) => {
         const success = await waitForJenkinsSuccess(buildId);
         if (!success) return res.status(500).json({ error: 'Jenkins başarısız oldu!' });
 
+        const screenshots = fs.readdirSync(SCREENSHOTS_DIR)
+            .filter(file => file.endsWith('.png'))
+            .map(file => path.join('/screenshots', file))
+            .sort((a, b) => {
+                const statA = fs.statSync(path.join(SCREENSHOTS_DIR, a.replace('/screenshots/', '')));
+                const statB = fs.statSync(path.join(SCREENSHOTS_DIR, b.replace('/screenshots/', '')));
+                return statB.mtime - statA.mtime; // Yeni dosyalar önce gelsin
+            });
+
+        console.log("✅ Ekran görüntüleri başarıyla alındı!");
+
+
+
+
+
+
         console.log("🔍 Video dosyası aranıyor...");
         const webmFile = getNewestWebmFile(VIDEOS_DIR);
         if (!webmFile) return res.status(500).json({ error: 'WebM dosyası bulunamadı!' });
@@ -263,6 +281,7 @@ test('${testName}', async ({  }) => {
             message: "Test başarıyla tamamlandı.",
             video: path.basename(mp4Path),
             thumbnail: path.basename(thumbnailPath),
+            screenshots
         });
 
     } catch (err) {
@@ -272,6 +291,34 @@ test('${testName}', async ({  }) => {
         }
     }
 });
+
+
+app.get('/api/screenshots', (req, res) => {
+    if (!fs.existsSync(SCREENSHOTS_DIR)) {
+        return res.status(404).json({ error: "Screenshots directory not found!" });
+    }
+
+    fs.readdir(SCREENSHOTS_DIR, (err, files) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error reading screenshots directory' });
+        }
+
+        // Sadece `.png` dosyalarını al ve sıralı bir liste olarak döndür
+        const screenshots = files
+            .filter(file => file.endsWith('.png'))
+            .map(file => path.join('/screenshots', file)) // Sunucuya doğru yol
+            .sort((a, b) => {
+                const statA = fs.statSync(path.join(SCREENSHOTS_DIR, a.replace('/screenshots/', '')));
+                const statB = fs.statSync(path.join(SCREENSHOTS_DIR, b.replace('/screenshots/', '')));
+                return statB.mtime - statA.mtime; // Yeni dosyalar önce gelsin
+            });
+
+        res.json(screenshots);
+    });
+});
+
+// ✅ **Screenshots klasörünü statik olarak sun**
+app.use('/screenshots', express.static(SCREENSHOTS_DIR));
 
 app.listen(PORT, () => {
     console.log('Server running on port ' + PORT);

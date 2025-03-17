@@ -1,4 +1,7 @@
 import { expect } from "@playwright/test";
+import path from "path";
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 // ✅ **Belirtilen süre kadar bekler**
 export function customWaitForTimeout(time) {
@@ -26,13 +29,27 @@ export async function customClick(locator, stepDescription, page, options = {}) 
         if (!locator) {
             throw new Error(`Locator is undefined at step: ${stepDescription}`);
         }
+
         console.log(`WAITING FOR ELEMENT TO BE ATTACHED: ${locator}`);
         await locator.waitFor({ state: 'attached', timeout: 10000 });
 
         console.log(`ELEMENT IS ATTACHED, NOW CLICKING`);
+        await locator.waitFor({ state: 'attached', timeout: 1500 });
         await locator.click(options);
 
         console.log(`CLICKED ON ELEMENT: ${locator}`);
+
+        // Screenshot alma işlemi
+        const screenshotDir = path.resolve('screenshots');
+        if (!fs.existsSync(screenshotDir)) {
+            fs.mkdirSync(screenshotDir, { recursive: true });
+        }
+
+        const screenshotPath = path.join(screenshotDir, `screenshot_${Date.now()}.png`);
+        await page.screenshot({ path: screenshotPath });
+
+        console.log(`Screenshot saved: ${screenshotPath}`);
+
     } catch (error) {
         console.error(`ERROR CLICKING ON ELEMENT at step: ${stepDescription} - ${error}`);
         await captureError(page, error, stepDescription);
