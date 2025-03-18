@@ -222,7 +222,8 @@ test('${testName}', async ({  }) => {
             if(testButton === "PlaceHolder Fill Button") testScript += `await customFill(customPlaceholder(page, '${selectedStep}'), '${value}','${testButton}', page);\n`;
         });
 
-        testScript += `await context.close(); } catch (error) { console.error("Hata:", error); throw error; } });`;
+        testScript += `await context.close(); 
+        console.log("Test başarılı bir şekilde bitti ...");} catch (error) { console.error("Hata:", error); throw error; } });`;
 
         fs.writeFileSync(testFilePath, testScript, 'utf-8');
 
@@ -238,8 +239,8 @@ test('${testName}', async ({  }) => {
         const buildId = await getLastBuildId();
         if (!buildId) return res.status(500).json({ error: 'Jenkins build ID alınamadı' });
 
-        const success = await waitForJenkinsSuccess(buildId);
-        if (!success) return res.status(500).json({ error: 'Jenkins başarısız oldu!' });
+        const jobStatus = await waitForJenkinsSuccess(buildId);
+// Artık jobStatus true veya false olabilir. Hata döndürmüyoruz, işlemlere devam ediyoruz.
 
         const screenshots = fs.readdirSync(SCREENSHOTS_DIR)
             .filter(file => file.endsWith('.png'))
@@ -247,15 +248,10 @@ test('${testName}', async ({  }) => {
             .sort((a, b) => {
                 const statA = fs.statSync(path.join(SCREENSHOTS_DIR, a.replace('/screenshots/', '')));
                 const statB = fs.statSync(path.join(SCREENSHOTS_DIR, b.replace('/screenshots/', '')));
-                return statB.mtime - statA.mtime; // Yeni dosyalar önce gelsin
+                return statB.mtime - statA.mtime;
             });
 
         console.log("✅ Ekran görüntüleri başarıyla alındı!");
-
-
-
-
-
 
         console.log("🔍 Video dosyası aranıyor...");
         const webmFile = getNewestWebmFile(VIDEOS_DIR);
@@ -278,12 +274,42 @@ test('${testName}', async ({  }) => {
             return res.status(500).json({ error: "Video veya Thumbnail dönüştürme başarısız!" });
         }
 
-        console.log("✅ Test tamamlandı, video ve thumbnail oluşturuldu!");
+        const consoleLogUrl = `http://localhost:8080/job/testBase/${buildId}/consoleText`;
+        const consoleResponse = await axios.get(consoleLogUrl, {
+            auth: { username: JENKINS_USER, password: JENKINS_TOKEN }
+        });
+        const consoleLog = consoleResponse.data;
+        const lines = consoleLog.split('\n');
+        const startIndex = lines.findIndex(line => line.includes("Test başladı..."));
+
+// İlk olarak başarılı bitiş mesajını arıyoruz
+        let endIndex = lines.findIndex(line => line.includes("Test başarılı bir şekilde bitti ..."));
+// Eğer bulunamazsa, başarısızlık mesajlarından birini endIndex olarak belirliyoruz
+        if (endIndex === -1) {
+            endIndex = lines.findIndex(line => line.includes("ERROR OCCURRED"));
+            if (endIndex === -1) {
+                endIndex = lines.findIndex(line => line.includes("Finished: FAILURE"));
+            }
+        }
+
+        let filteredLog = "";
+        if (startIndex !== -1) {
+            if (endIndex === -1 || endIndex <= startIndex) {
+                filteredLog = lines.slice(startIndex).join("\n").trim();
+            } else {
+                // endIndex satırını dahil etmiyoruz
+                filteredLog = lines.slice(startIndex, endIndex).join("\n").trim();
+            }
+        }
+
+        console.log("✅ Test sonuçları alındı.");
+
         res.json({
-            message: "Test başarıyla tamamlandı.",
+            message: jobStatus ? "Test başarıyla tamamlandı." : "Test başarısız oldu!",
             video: path.basename(mp4Path),
             thumbnail: path.basename(thumbnailPath),
-            screenshots
+            screenshots,
+            consoleLog: filteredLog
         });
 
     } catch (err) {

@@ -72,7 +72,7 @@ export function DashboardPage() {
             </div>
 
             <ShareEmail />
-            <TestSteps  />
+            <TestSteps consoleLog={videoInfo?.consoleLog} />
 
             {/* TestFailureWindow'a videoInfo prop olarak yolluyoruz */}
             <TestFailureWindow videoInfo={videoInfo} />

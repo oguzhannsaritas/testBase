@@ -133,11 +133,14 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
                 return;
             }
 
+
+
             if (onVideoInfo) {
                 onVideoInfo({
                     testName: testName,
                     video: data.video,
                     thumbnail: data.thumbnail,
+                    consoleLog: data.consoleLog
                 });
             }
         } catch (err) {
