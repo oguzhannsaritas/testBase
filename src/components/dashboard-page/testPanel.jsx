@@ -123,8 +123,12 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
 
             if (response.status === 200) {
                 setTimeout(() => {
-                    console.log(response.status, "=== Gelen response değeri ");
-                    toast.success(`Test başarıyla tamamlandı! 🎉`, { id: toastId });
+                    if (data.message === "Test başarısız oldu!") {
+                        toast.error(data.message, { id: toastId });
+                        console.log(data.message, {id: toastId});
+                    } else {
+                        toast.success("Test başarıyla tamamlandı! 🎉", { id: toastId });
+                    }
                 }, 1000);
             } else {
                 console.error("Test hata:", data.error);
@@ -132,6 +136,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
                 toast.error("Test çalıştırılırken hata oluştu!");
                 return;
             }
+
 
 
 

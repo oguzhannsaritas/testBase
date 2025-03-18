@@ -21,7 +21,6 @@ export function TestFailureWindow({ videoInfo }) {
         />
     ) : (
         <div className="w-full h-full bg-gray-300 rounded-[10px] flex justify-center items-center">
-            <p className="text-black">Görüntü bekleniyor...</p>
         </div>
     );
 
