@@ -7,16 +7,23 @@ export function TestFailureWindow({ videoInfo }) {
     const [isVideoOpen, setIsVideoOpen] = useState(false);
     const [isImageOpen, setIsImageOpen] = useState(false);
 
-    const fallbackThumbnail = "/img.png";
-    const fallbackVideo = null;
-
-    const finalThumbnailSrc = videoInfo && videoInfo.thumbnail
-        ? "/videos/" + videoInfo.thumbnail
-        : fallbackThumbnail;
-
     const finalVideoSrc = videoInfo && videoInfo.video
         ? "/videos/" + videoInfo.video
-        : fallbackVideo;
+        : null;
+
+    // Eğer thumbnail varsa resim göster, yoksa "Görüntü bekleniyor..." div'i göster
+    const finalThumbnail = videoInfo && videoInfo.thumbnail ? (
+        <img
+            src={"/videos/" + videoInfo.thumbnail}
+            alt="Test Failure"
+            className="w-full h-full rounded-lg cursor-pointer"
+            onClick={() => setIsImageOpen(true)}
+        />
+    ) : (
+        <div className="w-full h-full bg-gray-300 rounded-[10px] flex justify-center items-center">
+            <p className="text-black">Görüntü bekleniyor...</p>
+        </div>
+    );
 
     // Video ikonuna tıklanıldığında çalışacak fonksiyon
     const handleVideoClick = () => {
@@ -33,7 +40,6 @@ export function TestFailureWindow({ videoInfo }) {
         }
     };
 
-
     return (
         <div className="flex flex-row space-x-2 relative justify-center items-center left-[0.6%] top-[147px]">
             <svg width="550"
@@ -48,14 +54,9 @@ export function TestFailureWindow({ videoInfo }) {
                 </g>
             </svg>
 
-            {/* Thumbnail Resim */}
+            {/* Thumbnail veya Bekleme Ekranı */}
             <div className="absolute w-[35%] h-64 left-[32.2%] top-[75px] transition-transform duration-300">
-                <img
-                    src={finalThumbnailSrc}
-                    alt="Test Failure"
-                    className="w-full h-full rounded-lg cursor-pointer"
-                    onClick={() => setIsImageOpen(true)}
-                />
+                {finalThumbnail}
 
                 {/* Play İkonu */}
                 <svg
@@ -67,7 +68,7 @@ export function TestFailureWindow({ videoInfo }) {
                     fill="black"
                     className="absolute inset-0 cursor-pointer border-solid border-2 border-black hover:scale-110 transition-transform duration-300 rounded-full m-auto opacity-80"
                 >
-                    <path d="M8 5v14l11-7z" />
+                    <path d="M8 5v14l11-7z"/>
                 </svg>
             </div>
 
@@ -76,22 +77,22 @@ export function TestFailureWindow({ videoInfo }) {
                 {isVideoOpen && finalVideoSrc && (
                     <motion.div
                         className="fixed inset-0 bg-black/50 backdrop-blur-md flex justify-center items-center z-[9999]"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
                     >
                         <motion.div
                             className="relative bg-white/50 border-[1px] border-solid border-white/50 p-4 rounded-lg shadow-lg max-w-3xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            initial={{scale: 0.8, opacity: 0}}
+                            animate={{scale: 1, opacity: 1}}
+                            exit={{scale: 0.8, opacity: 0}}
+                            transition={{duration: 0.3, ease: "easeOut"}}
                         >
                             <button
                                 onClick={() => setIsVideoOpen(false)}
                                 className="absolute -right-12 -top-12 bg-white/50 border-[1px] border-solid border-black/30 p-2 z-50 cursor-pointer rounded-full hover:bg-white"
                             >
-                                <X size={20} />
+                                <X size={20}/>
                             </button>
 
                             <motion.video
@@ -99,10 +100,10 @@ export function TestFailureWindow({ videoInfo }) {
                                 autoPlay
                                 controls
                                 className="w-full h-auto rounded-lg"
-                                initial={{ scale: 2, opacity: 2 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0.8, opacity: 0 }}
-                                transition={{ duration: 0.3 }}
+                                initial={{scale: 2, opacity: 2}}
+                                animate={{scale: 1, opacity: 1}}
+                                exit={{scale: 0.8, opacity: 0}}
+                                transition={{duration: 0.3}}
                             />
                         </motion.div>
                     </motion.div>
@@ -114,31 +115,31 @@ export function TestFailureWindow({ videoInfo }) {
                 {isImageOpen && (
                     <motion.div
                         className="fixed inset-0 bg-black/50 backdrop-blur-md flex justify-center items-center z-[9999]"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
                     >
                         <motion.div
                             className="relative bg-white/50 border-[1px] border-solid border-white/50 p-4 rounded-lg shadow-lg max-w-3xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            initial={{scale: 0.8, opacity: 0}}
+                            animate={{scale: 1, opacity: 1}}
+                            exit={{scale: 0.8, opacity: 0}}
+                            transition={{duration: 0.3, ease: "easeOut"}}
                         >
                             <button
                                 onClick={() => setIsImageOpen(false)}
                                 className="absolute -right-12 -top-12 bg-white/50 border-[1px] border-solid border-black/30 p-2 z-50 cursor-pointer rounded-full hover:bg-white"
                             >
-                                <X size={20} />
+                                <X size={20}/>
                             </button>
 
                             <motion.img
-                                src={finalThumbnailSrc}
+                                src={videoInfo && videoInfo.thumbnail ? "/videos/" + videoInfo.thumbnail : ""}
                                 className="w-full h-auto rounded-lg"
-                                initial={{ scale: 2, opacity: 2 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0.8, opacity: 0 }}
-                                transition={{ duration: 0.3 }}
+                                initial={{scale: 2, opacity: 2}}
+                                animate={{scale: 1, opacity: 1}}
+                                exit={{scale: 0.8, opacity: 0}}
+                                transition={{duration: 0.3}}
                             />
                         </motion.div>
                     </motion.div>

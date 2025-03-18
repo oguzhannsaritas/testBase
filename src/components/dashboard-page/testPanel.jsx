@@ -212,7 +212,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
                                 {/* Tek input => selectedStep (URL) */}
                                 <input
                                     className="text-black bg-white/50 border border-opacity-5 border-black/10
-                                        rounded px-2 py-1 text-sm w-40 focus:outline-none hover:bg-white/65"
+                                        rounded px-2 py-1 text-sm w-full focus:outline-none hover:bg-white/65"
                                     placeholder="http://site.com"
                                     value={selectedStep || ""}
                                     onChange={(e) => handleInputChange(stepId, "selectedStep", e.target.value)}
@@ -574,7 +574,7 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
                                     {/* Tek input => bekleme süresi */}
                                     <input
                                         className="text-black bg-white/50 border border-opacity-5 border-black/10
-                                            rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
+                                            rounded px-2 py-1 text-sm w-full items-center justify-center justify-items-center  focus:outline-none hover:bg-white/65"
                                         placeholder="Süre (ms)"
                                         value={value || ""}
                                         onChange={(e) =>
@@ -647,8 +647,8 @@ export function TestPanel({ steps, onClearSteps, onRemoveStep, onVideoInfo }) {
                                     {/* Tek input => load state */}
                                     <input
                                         className="text-black bg-white/50 border border-opacity-5 border-black/10
-                                            rounded px-2 py-1 text-sm w-24 focus:outline-none hover:bg-white/65"
-                                        placeholder="load / networkidle..."
+                                            rounded px-2 py-1 text-sm w-full items-center  justify-items-center focus:outline-none hover:bg-white/65"
+                                        placeholder="load / networkidle / domcontentloaded"
                                         value={value || ""}
                                         onChange={(e) =>
                                             handleInputChange(stepId, "value", e.target.value)

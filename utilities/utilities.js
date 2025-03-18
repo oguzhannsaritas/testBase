@@ -29,34 +29,73 @@ export async function customClick(locator, stepDescription, page, options = {}) 
         if (!locator) {
             throw new Error(`Locator is undefined at step: ${stepDescription}`);
         }
+        console.log(`WAITING FOR ELEMENT TO BE CLİCKED: ${locator}`);
+        await locator.waitFor({ state: "attached", timeout: 10000 });
 
-        console.log(`WAITING FOR ELEMENT TO BE ATTACHED: ${locator}`);
-        await locator.waitFor({ state: 'attached', timeout: 10000 });
+        // Tıklanacak alanın konumunu ve boyutunu al
+        const box = await locator.boundingBox();
+        if (box) {
 
-        console.log(`ELEMENT IS ATTACHED, NOW CLICKING`);
-        await locator.waitFor({ state: 'attached', timeout: 1500 });
-        await locator.click(options);
+            // Screenshot dizini oluştur
+            const screenshotDir = path.resolve("screenshots");
+            if (!fs.existsSync(screenshotDir)) {
+                fs.mkdirSync(screenshotDir, { recursive: true });
+            }
 
-        console.log(`CLICKED ON ELEMENT: ${locator}`);
+            // **1. BUTONU KIRMIZI ÇERÇEVE İLE VURGULA**
+            await page.evaluate(({ x, y, width, height }) => {
+                const highlight = document.createElement("div");
+                highlight.style.position = "absolute";
+                highlight.style.left = `${x - 5}px`;
+                highlight.style.top = `${y - 5}px`;
+                highlight.style.width = `${width + 10}px`;
+                highlight.style.height = `${height + 10}px`;
+                highlight.style.border = "3px solid red";
+                highlight.style.borderRadius = "50%";
+                highlight.style.zIndex = "9999";
+                highlight.style.pointerEvents = "none";
+                highlight.setAttribute("id", "click-highlight");
 
-        // Screenshot alma işlemi
-        const screenshotDir = path.resolve('screenshots');
-        if (!fs.existsSync(screenshotDir)) {
-            fs.mkdirSync(screenshotDir, { recursive: true });
+                document.body.appendChild(highlight);
+            }, box);
+
+            // **1.1. VURGULANMIŞ HALİ EKRAN GÖRÜNTÜSÜ AL**
+            const highlightedScreenshot = path.join(
+                screenshotDir,
+                `screenshot_${Date.now()}_highlighted.png`
+            );
+            await page.screenshot({ path: highlightedScreenshot });
+
+            await locator.click(options);
+
+            // **Highlight'ı kaldır**
+            await page.evaluate(() => {
+                const highlight = document.getElementById("click-highlight");
+                if (highlight) {
+                    highlight.remove();
+                }
+            });
+
+            // **3. TIKLAMA SONRASI HALİNİN EKRAN GÖRÜNTÜSÜNÜ AL**
+            await page.waitForTimeout(500); // Sayfanın güncellenmesini bekle
+            const afterClickScreenshot = path.join(
+                screenshotDir,
+                `screenshot_${Date.now()}_after_click.png`
+            );
+            await page.screenshot({ path: afterClickScreenshot });
+
+            console.log(`CLICKED ON ELEMENT: ${locator}`);
+        } else {
+            console.warn(`⚠ Could not determine bounding box for element: ${locator}`);
         }
-
-        const screenshotPath = path.join(screenshotDir, `screenshot_${Date.now()}.png`);
-        await page.screenshot({ path: screenshotPath });
-
-        console.log(`Screenshot saved: ${screenshotPath}`);
-
     } catch (error) {
-        console.error(`ERROR CLICKING ON ELEMENT at step: ${stepDescription} - ${error}`);
+        console.error(
+            `❌ ERROR CLICKING ON ELEMENT at step: ${stepDescription} - ${error}`
+        );
         await captureError(page, error, stepDescription);
         throw new Error(`Failed to click element at step: ${stepDescription}`);
     }
 }
-
 // ✅ **Bir input alanını doldurma işlemi**
 export async function customFill(locator, value, stepDescription, page) {
     try {
@@ -95,14 +134,12 @@ export function customPlaceholder(page, placeholder) {
             throw new Error("Placeholder value is required");
         }
 
-        console.log(`FINDING ELEMENT WITH PLACEHOLDER: ${placeholder}`);
         const element = page.locator(`[placeholder="${placeholder}"]`);
 
         if (!element) {
             throw new Error(`No element found with placeholder: ${placeholder}`);
         }
 
-        console.log(`FOUND ELEMENT WITH PLACEHOLDER: ${placeholder}`);
         return element;
     } catch (error) {
         console.error(`ERROR FINDING ELEMENT WITH PLACEHOLDER: ${placeholder} - ${error}`);
@@ -124,27 +161,22 @@ export function customLocator(page, selector, { isText = false } = {}) {
 
         // **XPath olup olmadığını kontrol et**
         if (finalSelector.startsWith("//") || finalSelector.startsWith("(//")) {
-            console.log(`📌 XPath Detected: ${finalSelector}`);
             element = page.locator(`xpath=${finalSelector}`);
         }
         // **ID olup olmadığını kontrol et**
-        else if (finalSelector.startsWith("#")) {
-            console.log(`📌 ID Selector Detected: ${finalSelector}`);
-            element = page.locator(finalSelector);
+        else if (!finalSelector.startsWith("#") && !isText) {
+            element = page.locator(`#${finalSelector}`);
         }
         // **Full XPath olup olmadığını kontrol et**
         else if (finalSelector.startsWith("/") || finalSelector.startsWith("(")) {
-            console.log(`📌 Full XPath Detected: ${finalSelector}`);
             element = page.locator(`xpath=${finalSelector}`);
         }
         // **Text içeriğine göre element bulma**
         else if (isText) {
-            console.log(`📌 Text Selector Detected: ${finalSelector}`);
             element = page.locator(`text=${finalSelector}`);
         }
         // **Genel CSS selector olarak kullan**
         else {
-            console.log(`📌 CSS Selector Detected: ${finalSelector}`);
             element = page.locator(finalSelector);
         }
 
@@ -153,7 +185,6 @@ export function customLocator(page, selector, { isText = false } = {}) {
             throw new Error(`❌ No element found with selector: ${finalSelector}`);
         }
 
-        console.log(`✅ FOUND ELEMENT WITH SELECTOR: ${finalSelector}`);
         return element;
     } catch (error) {
         console.error(`❌ ERROR FINDING ELEMENT WITH SELECTOR: ${selector} - ${error.message}`);

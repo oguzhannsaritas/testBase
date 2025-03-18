@@ -41,13 +41,3 @@ body.dashboard-bg {
     position: relative;
 }
 
-/* FloatingPaths'ın arka planla tam örtüşmesini sağla */
-.floating-paths-container {
-    position: fixed; /* Sayfaya sabitlenmiş olacak */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0; /* Arka planın üstünde, içeriğin altında olacak */
-    pointer-events: none; /* Kullanıcı etkileşimini engelle */
-}

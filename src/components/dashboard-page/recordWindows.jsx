@@ -69,17 +69,18 @@ export function RecordWindows({ setModalContent }) {
                         Array.from({ length: 5 }).map((_, index) => (
                             <div
                                 key={index}
-                                className="w-96 h-48 bg-gradient-to-b border-solid to-white rounded-[10px] shadow-lg border-[1px] border-black/30 backdrop-blur-[20px] flex flex-col justify-center items-center gap-2.5 p-1 animate-pulse"
+                                className="w-[370px] h-48 bg-gradient-to-b p-2 border-solid to-white rounded-[10px] shadow-lg border-[1px] border-black/30 backdrop-blur-[20px] flex flex-col justify-center items-center gap-2.5 animate-pulse"
                             >
-                                <div className="w-5/6 h-36 bg-gray-300 rounded-[10px]"></div>
-                                <p className="text-gray-400">Görüntü bekleniyor...</p>
+                                <div className="w-full  h-full bg-gray-300 rounded-[10px]"><p
+                                    className="text-black justify-center flex relative items-center inset-y-20">Görüntü bekleniyor...</p></div>
+
                             </div>
                         ))
                         : // Eğer görüntüler varsa, onları göster
                         images.map((src, index) => (
                             <div
                                 key={index}
-                                className="w-96 h-48 bg-gradient-to-b border-solid to-white rounded-[10px] shadow-lg border-[1px] border-black/30 backdrop-blur-[20px] flex flex-col justify-start items-center gap-2.5 cursor-pointer p-1"
+                                className="w-[370px] h-48 bg-gradient-to-b border-solid to-white rounded-[10px] shadow-lg border-[1px] border-black/30 backdrop-blur-[20px] flex flex-col justify-start items-center gap-2.5 cursor-pointer p-1"
                                 onClick={() => openModal(index)}
                             >
                                 <img src={`http://localhost:5003${src}`} alt={`Item ${index + 1}`} className="w-full h-44 object-cover rounded-[10px]" />

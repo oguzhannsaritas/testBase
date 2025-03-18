@@ -226,11 +226,13 @@ test('${testName}', async ({  }) => {
 
         fs.writeFileSync(testFilePath, testScript, 'utf-8');
 
-        console.log("🚀 Jenkins Pipeline tetikleniyor...");
-        await axios.post(JENKINS_URL, {}, {
+        console.log(`🚀 Jenkins Pipeline tetikleniyor. Test dosyası: ${testFileName}`);
+
+        await axios.post(`${JENKINS_URL}?TOKEN=${JENKINS_TOKEN}&TEST_FILE=${testFileName}`, {}, {
             auth: { username: JENKINS_USER, password: JENKINS_TOKEN },
             headers: { 'Content-Type': 'application/json' }
         });
+
 
         await new Promise(resolve => setTimeout(resolve, 5000));
         const buildId = await getLastBuildId();
